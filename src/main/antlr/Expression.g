@@ -175,7 +175,6 @@ atomicExpression returns [AtomicExpression atomicExpression]
           $atomicExpression.setValue(value);
         }
       } else {
-      System.out.println($ID.text.toString());
         if($ID.text.toString().equals("true")) {
             $atomicExpression.setValue(true);
         } else if($ID.text.toString().equals("false")) {
@@ -204,15 +203,26 @@ signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression]
 
   
 number returns [double value]
-  :  digit1 = DIGIT {$value = (double)Integer.parseInt($digit1.text);} 
+  :  digit1 = NUMERIC {$value = Double.parseDouble($digit1.text.toString());}
   ;
 
 ID
   :  ('a'..'z' | 'A'..'Z' | '_' | '.' | '?' | '"') ('a'..'z' | 'A'..'Z' | '_' | '.' | '?' | '"' |DIGIT)*
   ;
 
+NUMERIC
+  :  DIGIT+ '.' DIGIT+ EXPONENT?
+  |  '.'? DIGIT+ EXPONENT?
+  ;
+
+fragment
+EXPONENT
+  :  ('e' | 'E') ('+' | '-')? DIGIT+
+  ;
+
+fragment
 DIGIT  
-  :  '0'..'9'+
+  :  '0'..'9'
   ;
 
 WS  :   (' '|'\t')+ { skip(); }

@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Expression.g 2018-02-06 23:05:34
+// $ANTLR 3.5.2 Expression.g 2018-02-07 00:00:11
 
 	package com.logpoint.libquery.grammar;
 	import java.util.LinkedList;
@@ -21,13 +21,11 @@ import org.antlr.runtime.tree.*;
 public class ExpressionParser extends Parser {
 	public static final String[] tokenNames = new String[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "CALL", "CALLSIGNEDUNARY", "DIGIT", 
-		"EQUALS", "FUNC", "ID", "SIGNEDUNARY", "WS", "'!='", "'%'", "'&&'", "'('", 
-		"')'", "'*'", "'+'", "'-'", "'/'", "'<'", "'<='", "'='", "'=='", "'>'", 
-		"'>='", "'^'", "'||'"
+		"EQUALS", "EXPONENT", "FUNC", "ID", "NUMERIC", "SIGNEDUNARY", "WS", "'!='", 
+		"'%'", "'&&'", "'('", "')'", "'*'", "'+'", "'-'", "'/'", "'<'", "'<='", 
+		"'='", "'=='", "'>'", "'>='", "'^'", "'||'"
 	};
 	public static final int EOF=-1;
-	public static final int T__12=12;
-	public static final int T__13=13;
 	public static final int T__14=14;
 	public static final int T__15=15;
 	public static final int T__16=16;
@@ -43,14 +41,18 @@ public class ExpressionParser extends Parser {
 	public static final int T__26=26;
 	public static final int T__27=27;
 	public static final int T__28=28;
+	public static final int T__29=29;
+	public static final int T__30=30;
 	public static final int CALL=4;
 	public static final int CALLSIGNEDUNARY=5;
 	public static final int DIGIT=6;
 	public static final int EQUALS=7;
-	public static final int FUNC=8;
-	public static final int ID=9;
-	public static final int SIGNEDUNARY=10;
-	public static final int WS=11;
+	public static final int EXPONENT=8;
+	public static final int FUNC=9;
+	public static final int ID=10;
+	public static final int NUMERIC=11;
+	public static final int SIGNEDUNARY=12;
+	public static final int WS=13;
 
 	// delegates
 	public Parser[] getDelegates() {
@@ -127,7 +129,7 @@ public class ExpressionParser extends Parser {
 
 		CommonTree ID1_tree=null;
 		CommonTree char_literal2_tree=null;
-		RewriteRuleTokenStream stream_23=new RewriteRuleTokenStream(adaptor,"token 23");
+		RewriteRuleTokenStream stream_25=new RewriteRuleTokenStream(adaptor,"token 25");
 		RewriteRuleTokenStream stream_ID=new RewriteRuleTokenStream(adaptor,"token ID");
 		RewriteRuleSubtreeStream stream_expressions=new RewriteRuleSubtreeStream(adaptor,"rule expressions");
 
@@ -138,8 +140,8 @@ public class ExpressionParser extends Parser {
 			ID1=(Token)match(input,ID,FOLLOW_ID_in_expression124);  
 			stream_ID.add(ID1);
 
-			char_literal2=(Token)match(input,23,FOLLOW_23_in_expression126);  
-			stream_23.add(char_literal2);
+			char_literal2=(Token)match(input,25,FOLLOW_25_in_expression126);  
+			stream_25.add(char_literal2);
 
 			pushFollow(FOLLOW_expressions_in_expression132);
 			expr=expressions();
@@ -148,7 +150,7 @@ public class ExpressionParser extends Parser {
 			stream_expressions.add(expr.getTree());
 			retval.expression = (expr!=null?((ExpressionParser.expressions_return)expr).expression:null);
 			// AST REWRITE
-			// elements: expressions, ID
+			// elements: ID, expressions
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -303,7 +305,7 @@ public class ExpressionParser extends Parser {
 			while (true) {
 				int alt2=2;
 				int LA2_0 = input.LA(1);
-				if ( (LA2_0==14||LA2_0==28) ) {
+				if ( (LA2_0==16||LA2_0==30) ) {
 					alt2=1;
 				}
 
@@ -314,10 +316,10 @@ public class ExpressionParser extends Parser {
 					// Expression.g:92:4: ( '&&' | '||' )
 					int alt1=2;
 					int LA1_0 = input.LA(1);
-					if ( (LA1_0==14) ) {
+					if ( (LA1_0==16) ) {
 						alt1=1;
 					}
-					else if ( (LA1_0==28) ) {
+					else if ( (LA1_0==30) ) {
 						alt1=2;
 					}
 
@@ -331,7 +333,7 @@ public class ExpressionParser extends Parser {
 						case 1 :
 							// Expression.g:93:4: '&&'
 							{
-							string_literal3=(Token)match(input,14,FOLLOW_14_in_logicalExpression220); 
+							string_literal3=(Token)match(input,16,FOLLOW_16_in_logicalExpression220); 
 							string_literal3_tree = (CommonTree)adaptor.create(string_literal3);
 							adaptor.addChild(root_0, string_literal3_tree);
 
@@ -341,7 +343,7 @@ public class ExpressionParser extends Parser {
 						case 2 :
 							// Expression.g:94:4: '||'
 							{
-							string_literal4=(Token)match(input,28,FOLLOW_28_in_logicalExpression226); 
+							string_literal4=(Token)match(input,30,FOLLOW_30_in_logicalExpression226); 
 							string_literal4_tree = (CommonTree)adaptor.create(string_literal4);
 							adaptor.addChild(root_0, string_literal4_tree);
 
@@ -459,7 +461,7 @@ public class ExpressionParser extends Parser {
 			while (true) {
 				int alt4=2;
 				int LA4_0 = input.LA(1);
-				if ( (LA4_0==DIGIT||LA4_0==ID||LA4_0==12||LA4_0==15||(LA4_0 >= 18 && LA4_0 <= 19)||(LA4_0 >= 21 && LA4_0 <= 22)||(LA4_0 >= 24 && LA4_0 <= 26)) ) {
+				if ( ((LA4_0 >= ID && LA4_0 <= NUMERIC)||LA4_0==14||LA4_0==17||(LA4_0 >= 20 && LA4_0 <= 21)||(LA4_0 >= 23 && LA4_0 <= 24)||(LA4_0 >= 26 && LA4_0 <= 28)) ) {
 					alt4=1;
 				}
 
@@ -470,41 +472,41 @@ public class ExpressionParser extends Parser {
 					// Expression.g:115:4: (| '==' | '!=' | '>' | '<' | '<=' | '>=' )
 					int alt3=7;
 					switch ( input.LA(1) ) {
-					case DIGIT:
 					case ID:
-					case 15:
-					case 18:
-					case 19:
+					case NUMERIC:
+					case 17:
+					case 20:
+					case 21:
 						{
 						alt3=1;
 						}
 						break;
-					case 24:
+					case 26:
 						{
 						alt3=2;
 						}
 						break;
-					case 12:
+					case 14:
 						{
 						alt3=3;
 						}
 						break;
-					case 25:
+					case 27:
 						{
 						alt3=4;
 						}
 						break;
-					case 21:
+					case 23:
 						{
 						alt3=5;
 						}
 						break;
-					case 22:
+					case 24:
 						{
 						alt3=6;
 						}
 						break;
-					case 26:
+					case 28:
 						{
 						alt3=7;
 						}
@@ -523,7 +525,7 @@ public class ExpressionParser extends Parser {
 						case 2 :
 							// Expression.g:116:4: '=='
 							{
-							string_literal5=(Token)match(input,24,FOLLOW_24_in_relationalExpression300); 
+							string_literal5=(Token)match(input,26,FOLLOW_26_in_relationalExpression300); 
 							string_literal5_tree = (CommonTree)adaptor.create(string_literal5);
 							adaptor.addChild(root_0, string_literal5_tree);
 
@@ -533,7 +535,7 @@ public class ExpressionParser extends Parser {
 						case 3 :
 							// Expression.g:117:4: '!='
 							{
-							string_literal6=(Token)match(input,12,FOLLOW_12_in_relationalExpression306); 
+							string_literal6=(Token)match(input,14,FOLLOW_14_in_relationalExpression306); 
 							string_literal6_tree = (CommonTree)adaptor.create(string_literal6);
 							adaptor.addChild(root_0, string_literal6_tree);
 
@@ -543,7 +545,7 @@ public class ExpressionParser extends Parser {
 						case 4 :
 							// Expression.g:118:4: '>'
 							{
-							char_literal7=(Token)match(input,25,FOLLOW_25_in_relationalExpression312); 
+							char_literal7=(Token)match(input,27,FOLLOW_27_in_relationalExpression312); 
 							char_literal7_tree = (CommonTree)adaptor.create(char_literal7);
 							adaptor.addChild(root_0, char_literal7_tree);
 
@@ -553,7 +555,7 @@ public class ExpressionParser extends Parser {
 						case 5 :
 							// Expression.g:119:4: '<'
 							{
-							char_literal8=(Token)match(input,21,FOLLOW_21_in_relationalExpression318); 
+							char_literal8=(Token)match(input,23,FOLLOW_23_in_relationalExpression318); 
 							char_literal8_tree = (CommonTree)adaptor.create(char_literal8);
 							adaptor.addChild(root_0, char_literal8_tree);
 
@@ -563,7 +565,7 @@ public class ExpressionParser extends Parser {
 						case 6 :
 							// Expression.g:120:4: '<='
 							{
-							string_literal9=(Token)match(input,22,FOLLOW_22_in_relationalExpression324); 
+							string_literal9=(Token)match(input,24,FOLLOW_24_in_relationalExpression324); 
 							string_literal9_tree = (CommonTree)adaptor.create(string_literal9);
 							adaptor.addChild(root_0, string_literal9_tree);
 
@@ -573,7 +575,7 @@ public class ExpressionParser extends Parser {
 						case 7 :
 							// Expression.g:121:4: '>='
 							{
-							string_literal10=(Token)match(input,26,FOLLOW_26_in_relationalExpression330); 
+							string_literal10=(Token)match(input,28,FOLLOW_28_in_relationalExpression330); 
 							string_literal10_tree = (CommonTree)adaptor.create(string_literal10);
 							adaptor.addChild(root_0, string_literal10_tree);
 
@@ -691,28 +693,28 @@ public class ExpressionParser extends Parser {
 			while (true) {
 				int alt6=2;
 				switch ( input.LA(1) ) {
-				case 19:
+				case 21:
 					{
 					int LA6_2 = input.LA(2);
-					if ( (LA6_2==DIGIT||LA6_2==ID||LA6_2==15||(LA6_2 >= 18 && LA6_2 <= 19)) ) {
+					if ( ((LA6_2 >= ID && LA6_2 <= NUMERIC)||LA6_2==17||(LA6_2 >= 20 && LA6_2 <= 21)) ) {
 						alt6=1;
 					}
 
 					}
 					break;
-				case 18:
+				case 20:
 					{
 					int LA6_3 = input.LA(2);
-					if ( (LA6_3==DIGIT||LA6_3==ID||LA6_3==15||(LA6_3 >= 18 && LA6_3 <= 19)) ) {
+					if ( ((LA6_3 >= ID && LA6_3 <= NUMERIC)||LA6_3==17||(LA6_3 >= 20 && LA6_3 <= 21)) ) {
 						alt6=1;
 					}
 
 					}
 					break;
-				case 13:
-				case 17:
-				case 20:
-				case 27:
+				case 15:
+				case 19:
+				case 22:
+				case 29:
 					{
 					alt6=1;
 					}
@@ -725,32 +727,32 @@ public class ExpressionParser extends Parser {
 					// Expression.g:141:4: ( '+' | '-' | '/' | '*' | '%' | '^' )
 					int alt5=6;
 					switch ( input.LA(1) ) {
-					case 18:
+					case 20:
 						{
 						alt5=1;
 						}
 						break;
-					case 19:
+					case 21:
 						{
 						alt5=2;
 						}
 						break;
-					case 20:
+					case 22:
 						{
 						alt5=3;
 						}
 						break;
-					case 17:
+					case 19:
 						{
 						alt5=4;
 						}
 						break;
-					case 13:
+					case 15:
 						{
 						alt5=5;
 						}
 						break;
-					case 27:
+					case 29:
 						{
 						alt5=6;
 						}
@@ -764,7 +766,7 @@ public class ExpressionParser extends Parser {
 						case 1 :
 							// Expression.g:142:3: '+'
 							{
-							char_literal11=(Token)match(input,18,FOLLOW_18_in_arithmeticExpression402); 
+							char_literal11=(Token)match(input,20,FOLLOW_20_in_arithmeticExpression402); 
 							char_literal11_tree = (CommonTree)adaptor.create(char_literal11);
 							adaptor.addChild(root_0, char_literal11_tree);
 
@@ -774,7 +776,7 @@ public class ExpressionParser extends Parser {
 						case 2 :
 							// Expression.g:143:4: '-'
 							{
-							char_literal12=(Token)match(input,19,FOLLOW_19_in_arithmeticExpression409); 
+							char_literal12=(Token)match(input,21,FOLLOW_21_in_arithmeticExpression409); 
 							char_literal12_tree = (CommonTree)adaptor.create(char_literal12);
 							adaptor.addChild(root_0, char_literal12_tree);
 
@@ -784,7 +786,7 @@ public class ExpressionParser extends Parser {
 						case 3 :
 							// Expression.g:144:4: '/'
 							{
-							char_literal13=(Token)match(input,20,FOLLOW_20_in_arithmeticExpression415); 
+							char_literal13=(Token)match(input,22,FOLLOW_22_in_arithmeticExpression415); 
 							char_literal13_tree = (CommonTree)adaptor.create(char_literal13);
 							adaptor.addChild(root_0, char_literal13_tree);
 
@@ -794,7 +796,7 @@ public class ExpressionParser extends Parser {
 						case 4 :
 							// Expression.g:145:4: '*'
 							{
-							char_literal14=(Token)match(input,17,FOLLOW_17_in_arithmeticExpression421); 
+							char_literal14=(Token)match(input,19,FOLLOW_19_in_arithmeticExpression421); 
 							char_literal14_tree = (CommonTree)adaptor.create(char_literal14);
 							adaptor.addChild(root_0, char_literal14_tree);
 
@@ -804,7 +806,7 @@ public class ExpressionParser extends Parser {
 						case 5 :
 							// Expression.g:146:4: '%'
 							{
-							char_literal15=(Token)match(input,13,FOLLOW_13_in_arithmeticExpression427); 
+							char_literal15=(Token)match(input,15,FOLLOW_15_in_arithmeticExpression427); 
 							char_literal15_tree = (CommonTree)adaptor.create(char_literal15);
 							adaptor.addChild(root_0, char_literal15_tree);
 
@@ -814,7 +816,7 @@ public class ExpressionParser extends Parser {
 						case 6 :
 							// Expression.g:147:4: '^'
 							{
-							char_literal16=(Token)match(input,27,FOLLOW_27_in_arithmeticExpression433); 
+							char_literal16=(Token)match(input,29,FOLLOW_29_in_arithmeticExpression433); 
 							char_literal16_tree = (CommonTree)adaptor.create(char_literal16);
 							adaptor.addChild(root_0, char_literal16_tree);
 
@@ -899,19 +901,19 @@ public class ExpressionParser extends Parser {
 			// Expression.g:157:3: (atomicExpr= atomicExpression |number1= signedUnaryExpression | '(' expr= expressions ')' )
 			int alt7=3;
 			switch ( input.LA(1) ) {
-			case DIGIT:
 			case ID:
+			case NUMERIC:
 				{
 				alt7=1;
 				}
 				break;
-			case 18:
-			case 19:
+			case 20:
+			case 21:
 				{
 				alt7=2;
 				}
 				break;
-			case 15:
+			case 17:
 				{
 				alt7=3;
 				}
@@ -958,7 +960,7 @@ public class ExpressionParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					char_literal17=(Token)match(input,15,FOLLOW_15_in_atom505); 
+					char_literal17=(Token)match(input,17,FOLLOW_17_in_atom505); 
 					char_literal17_tree = (CommonTree)adaptor.create(char_literal17);
 					adaptor.addChild(root_0, char_literal17_tree);
 
@@ -969,7 +971,7 @@ public class ExpressionParser extends Parser {
 					adaptor.addChild(root_0, expr.getTree());
 
 					retval.expression = (expr!=null?((ExpressionParser.expressions_return)expr).expression:null);
-					char_literal18=(Token)match(input,16,FOLLOW_16_in_atom515); 
+					char_literal18=(Token)match(input,18,FOLLOW_18_in_atom515); 
 					char_literal18_tree = (CommonTree)adaptor.create(char_literal18);
 					adaptor.addChild(root_0, char_literal18_tree);
 
@@ -1024,7 +1026,7 @@ public class ExpressionParser extends Parser {
 			// Expression.g:166:3: (number1= number | ID )
 			int alt8=2;
 			int LA8_0 = input.LA(1);
-			if ( (LA8_0==DIGIT) ) {
+			if ( (LA8_0==NUMERIC) ) {
 				alt8=1;
 			}
 			else if ( (LA8_0==ID) ) {
@@ -1074,7 +1076,6 @@ public class ExpressionParser extends Parser {
 					          retval.atomicExpression.setValue(value);
 					        }
 					      } else {
-					      System.out.println((ID19!=null?ID19.getText():null).toString());
 					        if((ID19!=null?ID19.getText():null).toString().equals("true")) {
 					            retval.atomicExpression.setValue(true);
 					        } else if((ID19!=null?ID19.getText():null).toString().equals("false")) {
@@ -1116,7 +1117,7 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "signedUnaryExpression"
-	// Expression.g:190:1: signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression] : ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) );
+	// Expression.g:189:1: signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression] : ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) );
 	public final ExpressionParser.signedUnaryExpression_return signedUnaryExpression() throws RecognitionException {
 		ExpressionParser.signedUnaryExpression_return retval = new ExpressionParser.signedUnaryExpression_return();
 		retval.start = input.LT(1);
@@ -1130,21 +1131,21 @@ public class ExpressionParser extends Parser {
 
 		CommonTree char_literal20_tree=null;
 		CommonTree char_literal21_tree=null;
-		RewriteRuleTokenStream stream_18=new RewriteRuleTokenStream(adaptor,"token 18");
-		RewriteRuleTokenStream stream_19=new RewriteRuleTokenStream(adaptor,"token 19");
+		RewriteRuleTokenStream stream_20=new RewriteRuleTokenStream(adaptor,"token 20");
+		RewriteRuleTokenStream stream_21=new RewriteRuleTokenStream(adaptor,"token 21");
 		RewriteRuleSubtreeStream stream_number=new RewriteRuleSubtreeStream(adaptor,"rule number");
 
 
 			retval.signedUnaryExpression = new SignedUnaryExpression();
 
 		try {
-			// Expression.g:194:3: ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) )
+			// Expression.g:193:3: ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) )
 			int alt9=2;
 			int LA9_0 = input.LA(1);
-			if ( (LA9_0==19) ) {
+			if ( (LA9_0==21) ) {
 				alt9=1;
 			}
-			else if ( (LA9_0==18) ) {
+			else if ( (LA9_0==20) ) {
 				alt9=2;
 			}
 
@@ -1156,10 +1157,10 @@ public class ExpressionParser extends Parser {
 
 			switch (alt9) {
 				case 1 :
-					// Expression.g:194:5: '-' number1= number
+					// Expression.g:193:5: '-' number1= number
 					{
-					char_literal20=(Token)match(input,19,FOLLOW_19_in_signedUnaryExpression575);  
-					stream_19.add(char_literal20);
+					char_literal20=(Token)match(input,21,FOLLOW_21_in_signedUnaryExpression575);  
+					stream_21.add(char_literal20);
 
 					pushFollow(FOLLOW_number_in_signedUnaryExpression581);
 					number1=number();
@@ -1171,7 +1172,7 @@ public class ExpressionParser extends Parser {
 					  		retval.signedUnaryExpression.setSign("-");
 					 
 					// AST REWRITE
-					// elements: number, 19
+					// elements: 21, number
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1181,13 +1182,13 @@ public class ExpressionParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 197:4: -> ^( SIGNEDUNARY '-' number )
+					// 196:4: -> ^( SIGNEDUNARY '-' number )
 					{
-						// Expression.g:197:7: ^( SIGNEDUNARY '-' number )
+						// Expression.g:196:7: ^( SIGNEDUNARY '-' number )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(SIGNEDUNARY, "SIGNEDUNARY"), root_1);
-						adaptor.addChild(root_1, stream_19.nextNode());
+						adaptor.addChild(root_1, stream_21.nextNode());
 						adaptor.addChild(root_1, stream_number.nextTree());
 						adaptor.addChild(root_0, root_1);
 						}
@@ -1200,10 +1201,10 @@ public class ExpressionParser extends Parser {
 					}
 					break;
 				case 2 :
-					// Expression.g:199:5: '+' number2= number
+					// Expression.g:198:5: '+' number2= number
 					{
-					char_literal21=(Token)match(input,18,FOLLOW_18_in_signedUnaryExpression601);  
-					stream_18.add(char_literal21);
+					char_literal21=(Token)match(input,20,FOLLOW_20_in_signedUnaryExpression601);  
+					stream_20.add(char_literal21);
 
 					pushFollow(FOLLOW_number_in_signedUnaryExpression607);
 					number2=number();
@@ -1215,7 +1216,7 @@ public class ExpressionParser extends Parser {
 					  		retval.signedUnaryExpression.setSign("+");
 					 
 					// AST REWRITE
-					// elements: number, 18
+					// elements: number, 20
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1225,13 +1226,13 @@ public class ExpressionParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 202:4: -> ^( SIGNEDUNARY '+' number )
+					// 201:4: -> ^( SIGNEDUNARY '+' number )
 					{
-						// Expression.g:202:7: ^( SIGNEDUNARY '+' number )
+						// Expression.g:201:7: ^( SIGNEDUNARY '+' number )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(SIGNEDUNARY, "SIGNEDUNARY"), root_1);
-						adaptor.addChild(root_1, stream_18.nextNode());
+						adaptor.addChild(root_1, stream_20.nextNode());
 						adaptor.addChild(root_1, stream_number.nextTree());
 						adaptor.addChild(root_0, root_1);
 						}
@@ -1273,7 +1274,7 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "number"
-	// Expression.g:206:1: number returns [double value] : digit1= DIGIT ;
+	// Expression.g:205:1: number returns [double value] : digit1= NUMERIC ;
 	public final ExpressionParser.number_return number() throws RecognitionException {
 		ExpressionParser.number_return retval = new ExpressionParser.number_return();
 		retval.start = input.LT(1);
@@ -1285,17 +1286,17 @@ public class ExpressionParser extends Parser {
 		CommonTree digit1_tree=null;
 
 		try {
-			// Expression.g:207:3: (digit1= DIGIT )
-			// Expression.g:207:6: digit1= DIGIT
+			// Expression.g:206:3: (digit1= NUMERIC )
+			// Expression.g:206:6: digit1= NUMERIC
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			digit1=(Token)match(input,DIGIT,FOLLOW_DIGIT_in_number644); 
+			digit1=(Token)match(input,NUMERIC,FOLLOW_NUMERIC_in_number644); 
 			digit1_tree = (CommonTree)adaptor.create(digit1);
 			adaptor.addChild(root_0, digit1_tree);
 
-			retval.value = (double)Integer.parseInt((digit1!=null?digit1.getText():null));
+			retval.value = Double.parseDouble((digit1!=null?digit1.getText():null).toString());
 			}
 
 			retval.stop = input.LT(-1);
@@ -1320,40 +1321,40 @@ public class ExpressionParser extends Parser {
 
 
 
-	public static final BitSet FOLLOW_ID_in_expression124 = new BitSet(new long[]{0x0000000000800000L});
-	public static final BitSet FOLLOW_23_in_expression126 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_ID_in_expression124 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_expression126 = new BitSet(new long[]{0x0000000000320C00L});
 	public static final BitSet FOLLOW_expressions_in_expression132 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_logicalExpression_in_expressions169 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression207 = new BitSet(new long[]{0x0000000010004002L});
-	public static final BitSet FOLLOW_14_in_logicalExpression220 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_28_in_logicalExpression226 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression243 = new BitSet(new long[]{0x0000000010004002L});
-	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression287 = new BitSet(new long[]{0x00000000076C9242L});
-	public static final BitSet FOLLOW_24_in_relationalExpression300 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_12_in_relationalExpression306 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_25_in_relationalExpression312 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_21_in_relationalExpression318 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_22_in_relationalExpression324 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_26_in_relationalExpression330 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression346 = new BitSet(new long[]{0x00000000076C9242L});
-	public static final BitSet FOLLOW_atom_in_arithmeticExpression390 = new BitSet(new long[]{0x00000000081E2002L});
-	public static final BitSet FOLLOW_18_in_arithmeticExpression402 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_19_in_arithmeticExpression409 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_20_in_arithmeticExpression415 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_17_in_arithmeticExpression421 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_13_in_arithmeticExpression427 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_27_in_arithmeticExpression433 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_atom_in_arithmeticExpression450 = new BitSet(new long[]{0x00000000081E2002L});
+	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression207 = new BitSet(new long[]{0x0000000040010002L});
+	public static final BitSet FOLLOW_16_in_logicalExpression220 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_30_in_logicalExpression226 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression243 = new BitSet(new long[]{0x0000000040010002L});
+	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression287 = new BitSet(new long[]{0x000000001DB24C02L});
+	public static final BitSet FOLLOW_26_in_relationalExpression300 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_14_in_relationalExpression306 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_27_in_relationalExpression312 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_23_in_relationalExpression318 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_24_in_relationalExpression324 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_28_in_relationalExpression330 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression346 = new BitSet(new long[]{0x000000001DB24C02L});
+	public static final BitSet FOLLOW_atom_in_arithmeticExpression390 = new BitSet(new long[]{0x0000000020788002L});
+	public static final BitSet FOLLOW_20_in_arithmeticExpression402 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_21_in_arithmeticExpression409 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_22_in_arithmeticExpression415 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_19_in_arithmeticExpression421 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_15_in_arithmeticExpression427 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_29_in_arithmeticExpression433 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_atom_in_arithmeticExpression450 = new BitSet(new long[]{0x0000000020788002L});
 	public static final BitSet FOLLOW_atomicExpression_in_atom485 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_signedUnaryExpression_in_atom497 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_15_in_atom505 = new BitSet(new long[]{0x00000000000C8240L});
-	public static final BitSet FOLLOW_expressions_in_atom511 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_atom515 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_17_in_atom505 = new BitSet(new long[]{0x0000000000320C00L});
+	public static final BitSet FOLLOW_expressions_in_atom511 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_18_in_atom515 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_number_in_atomicExpression543 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_ID_in_atomicExpression551 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_19_in_signedUnaryExpression575 = new BitSet(new long[]{0x0000000000000040L});
+	public static final BitSet FOLLOW_21_in_signedUnaryExpression575 = new BitSet(new long[]{0x0000000000000800L});
 	public static final BitSet FOLLOW_number_in_signedUnaryExpression581 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_18_in_signedUnaryExpression601 = new BitSet(new long[]{0x0000000000000040L});
+	public static final BitSet FOLLOW_20_in_signedUnaryExpression601 = new BitSet(new long[]{0x0000000000000800L});
 	public static final BitSet FOLLOW_number_in_signedUnaryExpression607 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_DIGIT_in_number644 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_NUMERIC_in_number644 = new BitSet(new long[]{0x0000000000000002L});
 }

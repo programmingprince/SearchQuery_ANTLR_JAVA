@@ -32,10 +32,6 @@ public class RelationalExpression extends BinaryExpression implements Expression
 
         Object rightOperand = values.get(1);
 
-        System.out.println(getOperator());
-        System.out.println(leftOperand.getClass());
-        System.out.println(rightOperand.getClass());
-
         if (!leftOperand.getClass().equals(rightOperand.getClass())) {
             throw new InvalidOperationException(getOperator() + " operator is only valid between similar operands.");
         }

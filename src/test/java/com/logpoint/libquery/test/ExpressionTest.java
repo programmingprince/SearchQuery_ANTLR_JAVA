@@ -35,13 +35,13 @@ public class ExpressionTest {
     @Test
     public void ExpressionQueryParser_ShouldReturnSingleNumber() {
         try {
-            expressionQueryParser.parseQuery("identifier=4", row);
+            expressionQueryParser.parseQuery("identifier=4.1e10", row);
         } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        assertEquals(row.get("identifier"), 4.0);
+        assertEquals(row.get("identifier"), 4.1E10);
     }
 
     @Test
