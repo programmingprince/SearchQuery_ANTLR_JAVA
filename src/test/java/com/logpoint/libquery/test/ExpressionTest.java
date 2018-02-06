@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.logpoint.libquery.exceptions.InvalidOperationException;
 import org.antlr.runtime.RecognitionException;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,6 @@ import com.logpoint.libquery.exceptions.ParseException;
 public class ExpressionTest {
 
     ExpressionQueryParser expressionQueryParser;
-    Map<String, Object> result;
     Map<String, Object> row;
 
     public ExpressionTest() {
@@ -33,106 +33,302 @@ public class ExpressionTest {
     }
 
     @Test
-    public void ExpressionQueryParser_ShouldAddNumbers() {
+    public void ExpressionQueryParser_ShouldReturnSingleNumber() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=4+2+3+1", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=4", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 10.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 4.0);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldAddNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=4+2+3+1", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), 10.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldSubstractNumbers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=4-1-2", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=4-1-2", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 1.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 1.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldMultiplyNumbers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=4*2*2", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=4*2*2", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 16.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 16.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldDivideNumbers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=16/2/2", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=16/2/2", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 4.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 4.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldPowerNumbers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=2^2^2", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=2^2^2", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 16.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 16.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldModulusNumbers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=13%7%4", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=13%7%4", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 2.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 2.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldPerformOperationWithParenthesis() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=(12+4)/(2*4)", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=(12+4)/(2*4)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 2.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 2.0);
     }
 
     @Test
     public void ExpressionQueryParser_ShouldPerformOperationWithIdentifiers() {
         try {
-            result = expressionQueryParser.parseQuery("identifier=10+datasize", row);
-        } catch (ParseException | RecognitionException e) {
+            expressionQueryParser.parseQuery("identifier=10+datasize", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        row.put("identifier", 522.0);
-        assertEquals(row, result);
+        assertEquals(row.get("identifier"), 522.0);
     }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformEqualsOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(512==datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformNotEqualsOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(51!=datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformGreaterThanOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(1000>datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformLessThanOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(100<datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformGreaterThanOrEqualsToOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(512>=datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformLessThanOrEqualsToOperationForNumbers() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(100<=datasize)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformEqualsOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol==HTTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+    @Test
+    public void ExpressionQueryParser_ShouldPerformNotEqualsOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol!=FTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformGreaterThanOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol>FTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformLessThanOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol<FTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), false);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformGreaterThanOrEqualsOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol>=HTTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformLessThanOrEqualsOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=(protocol<=SMTP)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformEqualsOperationForBoolean() {
+        try {
+            expressionQueryParser.parseQuery("identifier=((2>1)==true)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformNotEqualsOperationForBoolean() {
+        try {
+            expressionQueryParser.parseQuery("identifier=((2<1)!=true)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformConcatOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=protocol+col_type", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), "HTTPfilesystem");
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldNotPerformSubstractOperationForString() {
+        try {
+            expressionQueryParser.parseQuery("identifier=protocol-col_type", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), null);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.logpoint.libquery.expressions;
 
-public interface Expression<T> {
-	public T evaluateExpression();
+import com.logpoint.libquery.exceptions.InvalidOperationException;
+
+public interface Expression {
+    public Object evaluateExpression() throws InvalidOperationException;
 }

@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Expression.g 2018-02-05 16:35:48
+// $ANTLR 3.5.2 Expression.g 2018-02-06 23:05:34
 
 	package com.logpoint.libquery.grammar;
 	import java.util.LinkedList;
@@ -21,8 +21,9 @@ import org.antlr.runtime.tree.*;
 public class ExpressionParser extends Parser {
 	public static final String[] tokenNames = new String[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "CALL", "CALLSIGNEDUNARY", "DIGIT", 
-		"EQUALS", "FUNC", "ID", "SIGNEDUNARY", "WS", "'%'", "'('", "')'", "'*'", 
-		"'+'", "'-'", "'/'", "'='", "'^'"
+		"EQUALS", "FUNC", "ID", "SIGNEDUNARY", "WS", "'!='", "'%'", "'&&'", "'('", 
+		"')'", "'*'", "'+'", "'-'", "'/'", "'<'", "'<='", "'='", "'=='", "'>'", 
+		"'>='", "'^'", "'||'"
 	};
 	public static final int EOF=-1;
 	public static final int T__12=12;
@@ -34,6 +35,14 @@ public class ExpressionParser extends Parser {
 	public static final int T__18=18;
 	public static final int T__19=19;
 	public static final int T__20=20;
+	public static final int T__21=21;
+	public static final int T__22=22;
+	public static final int T__23=23;
+	public static final int T__24=24;
+	public static final int T__25=25;
+	public static final int T__26=26;
+	public static final int T__27=27;
+	public static final int T__28=28;
 	public static final int CALL=4;
 	public static final int CALLSIGNEDUNARY=5;
 	public static final int DIGIT=6;
@@ -105,7 +114,7 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "expression"
-	// Expression.g:72:1: expression returns [Expression expression] : ID '=' expr= additiveExpression -> ^( EQUALS ID additiveExpression ) ;
+	// Expression.g:72:1: expression returns [Expression expression] : ID '=' expr= expressions -> ^( EQUALS ID expressions ) ;
 	public final ExpressionParser.expression_return expression() throws ParseException, RecognitionException {
 		ExpressionParser.expression_return retval = new ExpressionParser.expression_return();
 		retval.start = input.LT(1);
@@ -118,31 +127,28 @@ public class ExpressionParser extends Parser {
 
 		CommonTree ID1_tree=null;
 		CommonTree char_literal2_tree=null;
-		RewriteRuleTokenStream stream_19=new RewriteRuleTokenStream(adaptor,"token 19");
+		RewriteRuleTokenStream stream_23=new RewriteRuleTokenStream(adaptor,"token 23");
 		RewriteRuleTokenStream stream_ID=new RewriteRuleTokenStream(adaptor,"token ID");
-		RewriteRuleSubtreeStream stream_additiveExpression=new RewriteRuleSubtreeStream(adaptor,"rule additiveExpression");
-
-
-			retval.expression = new BinaryArithmeticExpression();
+		RewriteRuleSubtreeStream stream_expressions=new RewriteRuleSubtreeStream(adaptor,"rule expressions");
 
 		try {
-			// Expression.g:76:2: ( ID '=' expr= additiveExpression -> ^( EQUALS ID additiveExpression ) )
-			// Expression.g:76:6: ID '=' expr= additiveExpression
+			// Expression.g:73:2: ( ID '=' expr= expressions -> ^( EQUALS ID expressions ) )
+			// Expression.g:73:6: ID '=' expr= expressions
 			{
-			ID1=(Token)match(input,ID,FOLLOW_ID_in_expression129);  
+			ID1=(Token)match(input,ID,FOLLOW_ID_in_expression124);  
 			stream_ID.add(ID1);
 
-			char_literal2=(Token)match(input,19,FOLLOW_19_in_expression131);  
-			stream_19.add(char_literal2);
+			char_literal2=(Token)match(input,23,FOLLOW_23_in_expression126);  
+			stream_23.add(char_literal2);
 
-			pushFollow(FOLLOW_additiveExpression_in_expression137);
-			expr=additiveExpression();
+			pushFollow(FOLLOW_expressions_in_expression132);
+			expr=expressions();
 			state._fsp--;
 
-			stream_additiveExpression.add(expr.getTree());
-			retval.expression = (expr!=null?((ExpressionParser.additiveExpression_return)expr).additiveExpression:null);
+			stream_expressions.add(expr.getTree());
+			retval.expression = (expr!=null?((ExpressionParser.expressions_return)expr).expression:null);
 			// AST REWRITE
-			// elements: ID, additiveExpression
+			// elements: expressions, ID
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -152,14 +158,14 @@ public class ExpressionParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 76:81: -> ^( EQUALS ID additiveExpression )
+			// 73:66: -> ^( EQUALS ID expressions )
 			{
-				// Expression.g:76:84: ^( EQUALS ID additiveExpression )
+				// Expression.g:73:69: ^( EQUALS ID expressions )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(EQUALS, "EQUALS"), root_1);
 				adaptor.addChild(root_1, stream_ID.nextNode());
-				adaptor.addChild(root_1, stream_additiveExpression.nextTree());
+				adaptor.addChild(root_1, stream_expressions.nextTree());
 				adaptor.addChild(root_0, root_1);
 				}
 
@@ -189,75 +195,129 @@ public class ExpressionParser extends Parser {
 	// $ANTLR end "expression"
 
 
-	public static class additiveExpression_return extends ParserRuleReturnScope {
-		public BinaryArithmeticExpression additiveExpression;
+	public static class expressions_return extends ParserRuleReturnScope {
+		public Expression expression;
 		CommonTree tree;
 		@Override
 		public CommonTree getTree() { return tree; }
 	};
 
 
-	// $ANTLR start "additiveExpression"
-	// Expression.g:79:1: additiveExpression returns [BinaryArithmeticExpression additiveExpression] : (expr1= multiplicativeExpression ) ( ( '+' | '-' ) ^ (expr2= multiplicativeExpression ) )* ;
-	public final ExpressionParser.additiveExpression_return additiveExpression() throws RecognitionException {
-		ExpressionParser.additiveExpression_return retval = new ExpressionParser.additiveExpression_return();
+	// $ANTLR start "expressions"
+	// Expression.g:76:1: expressions returns [Expression expression] : expr1= logicalExpression ;
+	public final ExpressionParser.expressions_return expressions() throws RecognitionException {
+		ExpressionParser.expressions_return retval = new ExpressionParser.expressions_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token char_literal3=null;
-		Token char_literal4=null;
 		ParserRuleReturnScope expr1 =null;
-		ParserRuleReturnScope expr2 =null;
 
-		CommonTree char_literal3_tree=null;
-		CommonTree char_literal4_tree=null;
-
-
-			retval.additiveExpression = new BinaryArithmeticExpression();
-			List<Expression<Double>> expressions = new ArrayList<Expression<Double>>();
 
 		try {
-			// Expression.g:88:2: ( (expr1= multiplicativeExpression ) ( ( '+' | '-' ) ^ (expr2= multiplicativeExpression ) )* )
-			// Expression.g:88:6: (expr1= multiplicativeExpression ) ( ( '+' | '-' ) ^ (expr2= multiplicativeExpression ) )*
+			// Expression.g:77:5: (expr1= logicalExpression )
+			// Expression.g:77:7: expr1= logicalExpression
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			// Expression.g:88:6: (expr1= multiplicativeExpression )
-			// Expression.g:88:7: expr1= multiplicativeExpression
+			pushFollow(FOLLOW_logicalExpression_in_expressions169);
+			expr1=logicalExpression();
+			state._fsp--;
+
+			adaptor.addChild(root_0, expr1.getTree());
+
+			retval.expression = (expr1!=null?((ExpressionParser.logicalExpression_return)expr1).logicalExpression:null);
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+			retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "expressions"
+
+
+	public static class logicalExpression_return extends ParserRuleReturnScope {
+		public LogicalExpression logicalExpression;
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "logicalExpression"
+	// Expression.g:80:1: logicalExpression returns [LogicalExpression logicalExpression] : (expr1= relationalExpression ) ( ( '&&' | '||' ) ^ (expr2= relationalExpression ) )* ;
+	public final ExpressionParser.logicalExpression_return logicalExpression() throws RecognitionException {
+		ExpressionParser.logicalExpression_return retval = new ExpressionParser.logicalExpression_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		Token string_literal3=null;
+		Token string_literal4=null;
+		ParserRuleReturnScope expr1 =null;
+		ParserRuleReturnScope expr2 =null;
+
+		CommonTree string_literal3_tree=null;
+		CommonTree string_literal4_tree=null;
+
+
+			retval.logicalExpression = new LogicalExpression();
+			List<Expression> expressions = new ArrayList<Expression>();
+
+		try {
+			// Expression.g:89:2: ( (expr1= relationalExpression ) ( ( '&&' | '||' ) ^ (expr2= relationalExpression ) )* )
+			// Expression.g:89:6: (expr1= relationalExpression ) ( ( '&&' | '||' ) ^ (expr2= relationalExpression ) )*
 			{
-			pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression185);
-			expr1=multiplicativeExpression();
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			// Expression.g:89:6: (expr1= relationalExpression )
+			// Expression.g:89:7: expr1= relationalExpression
+			{
+			pushFollow(FOLLOW_relationalExpression_in_logicalExpression207);
+			expr1=relationalExpression();
 			state._fsp--;
 
 			adaptor.addChild(root_0, expr1.getTree());
 
 
-							expressions.add((expr1!=null?((ExpressionParser.multiplicativeExpression_return)expr1).multiplicativeExpression:null));
-						
+							expressions.add((expr1!=null?((ExpressionParser.relationalExpression_return)expr1).relationalExpression:null));
+					
 			}
 
-			// Expression.g:91:5: ( ( '+' | '-' ) ^ (expr2= multiplicativeExpression ) )*
+			// Expression.g:92:3: ( ( '&&' | '||' ) ^ (expr2= relationalExpression ) )*
 			loop2:
 			while (true) {
 				int alt2=2;
 				int LA2_0 = input.LA(1);
-				if ( ((LA2_0 >= 16 && LA2_0 <= 17)) ) {
+				if ( (LA2_0==14||LA2_0==28) ) {
 					alt2=1;
 				}
 
 				switch (alt2) {
 				case 1 :
-					// Expression.g:91:6: ( '+' | '-' ) ^ (expr2= multiplicativeExpression )
+					// Expression.g:92:4: ( '&&' | '||' ) ^ (expr2= relationalExpression )
 					{
-					// Expression.g:91:6: ( '+' | '-' )
+					// Expression.g:92:4: ( '&&' | '||' )
 					int alt1=2;
 					int LA1_0 = input.LA(1);
-					if ( (LA1_0==16) ) {
+					if ( (LA1_0==14) ) {
 						alt1=1;
 					}
-					else if ( (LA1_0==17) ) {
+					else if ( (LA1_0==28) ) {
 						alt1=2;
 					}
 
@@ -269,40 +329,40 @@ public class ExpressionParser extends Parser {
 
 					switch (alt1) {
 						case 1 :
-							// Expression.g:91:7: '+'
+							// Expression.g:93:4: '&&'
 							{
-							char_literal3=(Token)match(input,16,FOLLOW_16_in_additiveExpression195); 
-							char_literal3_tree = (CommonTree)adaptor.create(char_literal3);
-							adaptor.addChild(root_0, char_literal3_tree);
+							string_literal3=(Token)match(input,14,FOLLOW_14_in_logicalExpression220); 
+							string_literal3_tree = (CommonTree)adaptor.create(string_literal3);
+							adaptor.addChild(root_0, string_literal3_tree);
 
-							retval.additiveExpression.setOperator('+');
+							retval.logicalExpression.setOperator("&&");
 							}
 							break;
 						case 2 :
-							// Expression.g:91:51: '-'
+							// Expression.g:94:4: '||'
 							{
-							char_literal4=(Token)match(input,17,FOLLOW_17_in_additiveExpression199); 
-							char_literal4_tree = (CommonTree)adaptor.create(char_literal4);
-							adaptor.addChild(root_0, char_literal4_tree);
+							string_literal4=(Token)match(input,28,FOLLOW_28_in_logicalExpression226); 
+							string_literal4_tree = (CommonTree)adaptor.create(string_literal4);
+							adaptor.addChild(root_0, string_literal4_tree);
 
-							retval.additiveExpression.setOperator('-');
+							retval.logicalExpression.setOperator("||");
 							}
 							break;
 
 					}
 
-					// Expression.g:91:96: (expr2= multiplicativeExpression )
-					// Expression.g:91:97: expr2= multiplicativeExpression
+					// Expression.g:97:4: (expr2= relationalExpression )
+					// Expression.g:97:5: expr2= relationalExpression
 					{
-					pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression209);
-					expr2=multiplicativeExpression();
+					pushFollow(FOLLOW_relationalExpression_in_logicalExpression243);
+					expr2=relationalExpression();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr2.getTree());
 
 
-									expressions.add((expr2!=null?((ExpressionParser.multiplicativeExpression_return)expr2).multiplicativeExpression:null));
-								
+									expressions.add((expr2!=null?((ExpressionParser.relationalExpression_return)expr2).relationalExpression:null));
+							
 					}
 
 					}
@@ -321,7 +381,7 @@ public class ExpressionParser extends Parser {
 			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
 
 
-				retval.additiveExpression.setExpressions(expressions);
+				retval.logicalExpression.setExpressions(expressions);
 
 		}
 		catch (RecognitionException re) {
@@ -334,84 +394,92 @@ public class ExpressionParser extends Parser {
 		}
 		return retval;
 	}
-	// $ANTLR end "additiveExpression"
+	// $ANTLR end "logicalExpression"
 
 
-	public static class multiplicativeExpression_return extends ParserRuleReturnScope {
-		public BinaryArithmeticExpression multiplicativeExpression;
+	public static class relationalExpression_return extends ParserRuleReturnScope {
+		public RelationalExpression relationalExpression;
 		CommonTree tree;
 		@Override
 		public CommonTree getTree() { return tree; }
 	};
 
 
-	// $ANTLR start "multiplicativeExpression"
-	// Expression.g:96:1: multiplicativeExpression returns [BinaryArithmeticExpression multiplicativeExpression] : (expr1= atom ) ( ( '*' | '/' | '%' | '^' ) ^ (expr2= atom ) )* ;
-	public final ExpressionParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
-		ExpressionParser.multiplicativeExpression_return retval = new ExpressionParser.multiplicativeExpression_return();
+	// $ANTLR start "relationalExpression"
+	// Expression.g:103:1: relationalExpression returns [RelationalExpression relationalExpression] : (expr1= arithmeticExpression ) ( (| '==' | '!=' | '>' | '<' | '<=' | '>=' ) ^ (expr2= arithmeticExpression ) )* ;
+	public final ExpressionParser.relationalExpression_return relationalExpression() throws RecognitionException {
+		ExpressionParser.relationalExpression_return retval = new ExpressionParser.relationalExpression_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token char_literal5=null;
-		Token char_literal6=null;
+		Token string_literal5=null;
+		Token string_literal6=null;
 		Token char_literal7=null;
 		Token char_literal8=null;
+		Token string_literal9=null;
+		Token string_literal10=null;
 		ParserRuleReturnScope expr1 =null;
 		ParserRuleReturnScope expr2 =null;
 
-		CommonTree char_literal5_tree=null;
-		CommonTree char_literal6_tree=null;
+		CommonTree string_literal5_tree=null;
+		CommonTree string_literal6_tree=null;
 		CommonTree char_literal7_tree=null;
 		CommonTree char_literal8_tree=null;
+		CommonTree string_literal9_tree=null;
+		CommonTree string_literal10_tree=null;
 
 
-			retval.multiplicativeExpression = new BinaryArithmeticExpression();
-			List<Expression<Double>> expressions = new ArrayList<Expression<Double>>();
+			retval.relationalExpression = new RelationalExpression();
+			List<Expression> expressions = new ArrayList<Expression>();
 
 		try {
-			// Expression.g:105:5: ( (expr1= atom ) ( ( '*' | '/' | '%' | '^' ) ^ (expr2= atom ) )* )
-			// Expression.g:105:9: (expr1= atom ) ( ( '*' | '/' | '%' | '^' ) ^ (expr2= atom ) )*
+			// Expression.g:112:2: ( (expr1= arithmeticExpression ) ( (| '==' | '!=' | '>' | '<' | '<=' | '>=' ) ^ (expr2= arithmeticExpression ) )* )
+			// Expression.g:112:6: (expr1= arithmeticExpression ) ( (| '==' | '!=' | '>' | '<' | '<=' | '>=' ) ^ (expr2= arithmeticExpression ) )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			// Expression.g:105:9: (expr1= atom )
-			// Expression.g:105:10: expr1= atom
+			// Expression.g:112:6: (expr1= arithmeticExpression )
+			// Expression.g:112:7: expr1= arithmeticExpression
 			{
-			pushFollow(FOLLOW_atom_in_multiplicativeExpression253);
-			expr1=atom();
+			pushFollow(FOLLOW_arithmeticExpression_in_relationalExpression287);
+			expr1=arithmeticExpression();
 			state._fsp--;
 
 			adaptor.addChild(root_0, expr1.getTree());
 
 
-			    				expressions.add((expr1!=null?((ExpressionParser.atom_return)expr1).expression:null));
-			    			
+							expressions.add((expr1!=null?((ExpressionParser.arithmeticExpression_return)expr1).arithmeticExpression:null));
+					
 			}
 
-			// Expression.g:108:9: ( ( '*' | '/' | '%' | '^' ) ^ (expr2= atom ) )*
+			// Expression.g:115:3: ( (| '==' | '!=' | '>' | '<' | '<=' | '>=' ) ^ (expr2= arithmeticExpression ) )*
 			loop4:
 			while (true) {
 				int alt4=2;
 				int LA4_0 = input.LA(1);
-				if ( (LA4_0==12||LA4_0==15||LA4_0==18||LA4_0==20) ) {
+				if ( (LA4_0==DIGIT||LA4_0==ID||LA4_0==12||LA4_0==15||(LA4_0 >= 18 && LA4_0 <= 19)||(LA4_0 >= 21 && LA4_0 <= 22)||(LA4_0 >= 24 && LA4_0 <= 26)) ) {
 					alt4=1;
 				}
 
 				switch (alt4) {
 				case 1 :
-					// Expression.g:108:10: ( '*' | '/' | '%' | '^' ) ^ (expr2= atom )
+					// Expression.g:115:4: (| '==' | '!=' | '>' | '<' | '<=' | '>=' ) ^ (expr2= arithmeticExpression )
 					{
-					// Expression.g:108:10: ( '*' | '/' | '%' | '^' )
-					int alt3=4;
+					// Expression.g:115:4: (| '==' | '!=' | '>' | '<' | '<=' | '>=' )
+					int alt3=7;
 					switch ( input.LA(1) ) {
+					case DIGIT:
+					case ID:
 					case 15:
+					case 18:
+					case 19:
 						{
 						alt3=1;
 						}
 						break;
-					case 18:
+					case 24:
 						{
 						alt3=2;
 						}
@@ -421,9 +489,24 @@ public class ExpressionParser extends Parser {
 						alt3=3;
 						}
 						break;
-					case 20:
+					case 25:
 						{
 						alt3=4;
+						}
+						break;
+					case 21:
+						{
+						alt3=5;
+						}
+						break;
+					case 22:
+						{
+						alt3=6;
+						}
+						break;
+					case 26:
+						{
+						alt3=7;
 						}
 						break;
 					default:
@@ -433,60 +516,85 @@ public class ExpressionParser extends Parser {
 					}
 					switch (alt3) {
 						case 1 :
-							// Expression.g:108:11: '*'
+							// Expression.g:116:3: 
 							{
-							char_literal5=(Token)match(input,15,FOLLOW_15_in_multiplicativeExpression267); 
-							char_literal5_tree = (CommonTree)adaptor.create(char_literal5);
-							adaptor.addChild(root_0, char_literal5_tree);
-
-							retval.multiplicativeExpression.setOperator('*');
 							}
 							break;
 						case 2 :
-							// Expression.g:108:60: '/'
+							// Expression.g:116:4: '=='
 							{
-							char_literal6=(Token)match(input,18,FOLLOW_18_in_multiplicativeExpression270); 
-							char_literal6_tree = (CommonTree)adaptor.create(char_literal6);
-							adaptor.addChild(root_0, char_literal6_tree);
+							string_literal5=(Token)match(input,24,FOLLOW_24_in_relationalExpression300); 
+							string_literal5_tree = (CommonTree)adaptor.create(string_literal5);
+							adaptor.addChild(root_0, string_literal5_tree);
 
-							retval.multiplicativeExpression.setOperator('/');
+							retval.relationalExpression.setOperator("==");
 							}
 							break;
 						case 3 :
-							// Expression.g:108:109: '%'
+							// Expression.g:117:4: '!='
 							{
-							char_literal7=(Token)match(input,12,FOLLOW_12_in_multiplicativeExpression273); 
-							char_literal7_tree = (CommonTree)adaptor.create(char_literal7);
-							adaptor.addChild(root_0, char_literal7_tree);
+							string_literal6=(Token)match(input,12,FOLLOW_12_in_relationalExpression306); 
+							string_literal6_tree = (CommonTree)adaptor.create(string_literal6);
+							adaptor.addChild(root_0, string_literal6_tree);
 
-							retval.multiplicativeExpression.setOperator('%');
+							retval.relationalExpression.setOperator("!=");
 							}
 							break;
 						case 4 :
-							// Expression.g:108:159: '^'
+							// Expression.g:118:4: '>'
 							{
-							char_literal8=(Token)match(input,20,FOLLOW_20_in_multiplicativeExpression276); 
+							char_literal7=(Token)match(input,25,FOLLOW_25_in_relationalExpression312); 
+							char_literal7_tree = (CommonTree)adaptor.create(char_literal7);
+							adaptor.addChild(root_0, char_literal7_tree);
+
+							retval.relationalExpression.setOperator(">");
+							}
+							break;
+						case 5 :
+							// Expression.g:119:4: '<'
+							{
+							char_literal8=(Token)match(input,21,FOLLOW_21_in_relationalExpression318); 
 							char_literal8_tree = (CommonTree)adaptor.create(char_literal8);
 							adaptor.addChild(root_0, char_literal8_tree);
 
-							retval.multiplicativeExpression.setOperator('^');
+							retval.relationalExpression.setOperator("<");
+							}
+							break;
+						case 6 :
+							// Expression.g:120:4: '<='
+							{
+							string_literal9=(Token)match(input,22,FOLLOW_22_in_relationalExpression324); 
+							string_literal9_tree = (CommonTree)adaptor.create(string_literal9);
+							adaptor.addChild(root_0, string_literal9_tree);
+
+							retval.relationalExpression.setOperator("<=");
+							}
+							break;
+						case 7 :
+							// Expression.g:121:4: '>='
+							{
+							string_literal10=(Token)match(input,26,FOLLOW_26_in_relationalExpression330); 
+							string_literal10_tree = (CommonTree)adaptor.create(string_literal10);
+							adaptor.addChild(root_0, string_literal10_tree);
+
+							retval.relationalExpression.setOperator(">=");
 							}
 							break;
 
 					}
 
-					// Expression.g:108:210: (expr2= atom )
-					// Expression.g:108:211: expr2= atom
+					// Expression.g:123:4: (expr2= arithmeticExpression )
+					// Expression.g:123:5: expr2= arithmeticExpression
 					{
-					pushFollow(FOLLOW_atom_in_multiplicativeExpression286);
-					expr2=atom();
+					pushFollow(FOLLOW_arithmeticExpression_in_relationalExpression346);
+					expr2=arithmeticExpression();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr2.getTree());
 
 
-					    				expressions.add((expr2!=null?((ExpressionParser.atom_return)expr2).expression:null));
-					    		
+									expressions.add((expr2!=null?((ExpressionParser.arithmeticExpression_return)expr2).arithmeticExpression:null));
+							
 					}
 
 					}
@@ -505,7 +613,7 @@ public class ExpressionParser extends Parser {
 			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
 
 
-				retval.multiplicativeExpression.setExpressions(expressions);
+				retval.relationalExpression.setExpressions(expressions);
 
 		}
 		catch (RecognitionException re) {
@@ -518,11 +626,252 @@ public class ExpressionParser extends Parser {
 		}
 		return retval;
 	}
-	// $ANTLR end "multiplicativeExpression"
+	// $ANTLR end "relationalExpression"
+
+
+	public static class arithmeticExpression_return extends ParserRuleReturnScope {
+		public ArithmeticExpression arithmeticExpression;
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "arithmeticExpression"
+	// Expression.g:129:1: arithmeticExpression returns [ArithmeticExpression arithmeticExpression] : (expr1= atom ) ( ( '+' | '-' | '/' | '*' | '%' | '^' ) ^ (expr2= atom ) )* ;
+	public final ExpressionParser.arithmeticExpression_return arithmeticExpression() throws RecognitionException {
+		ExpressionParser.arithmeticExpression_return retval = new ExpressionParser.arithmeticExpression_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		Token char_literal11=null;
+		Token char_literal12=null;
+		Token char_literal13=null;
+		Token char_literal14=null;
+		Token char_literal15=null;
+		Token char_literal16=null;
+		ParserRuleReturnScope expr1 =null;
+		ParserRuleReturnScope expr2 =null;
+
+		CommonTree char_literal11_tree=null;
+		CommonTree char_literal12_tree=null;
+		CommonTree char_literal13_tree=null;
+		CommonTree char_literal14_tree=null;
+		CommonTree char_literal15_tree=null;
+		CommonTree char_literal16_tree=null;
+
+
+			retval.arithmeticExpression = new ArithmeticExpression();
+			List<Expression> expressions = new ArrayList<Expression>();
+
+		try {
+			// Expression.g:138:2: ( (expr1= atom ) ( ( '+' | '-' | '/' | '*' | '%' | '^' ) ^ (expr2= atom ) )* )
+			// Expression.g:138:6: (expr1= atom ) ( ( '+' | '-' | '/' | '*' | '%' | '^' ) ^ (expr2= atom ) )*
+			{
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			// Expression.g:138:6: (expr1= atom )
+			// Expression.g:138:7: expr1= atom
+			{
+			pushFollow(FOLLOW_atom_in_arithmeticExpression390);
+			expr1=atom();
+			state._fsp--;
+
+			adaptor.addChild(root_0, expr1.getTree());
+
+
+							expressions.add((expr1!=null?((ExpressionParser.atom_return)expr1).expression:null));
+					
+			}
+
+			// Expression.g:141:3: ( ( '+' | '-' | '/' | '*' | '%' | '^' ) ^ (expr2= atom ) )*
+			loop6:
+			while (true) {
+				int alt6=2;
+				switch ( input.LA(1) ) {
+				case 19:
+					{
+					int LA6_2 = input.LA(2);
+					if ( (LA6_2==DIGIT||LA6_2==ID||LA6_2==15||(LA6_2 >= 18 && LA6_2 <= 19)) ) {
+						alt6=1;
+					}
+
+					}
+					break;
+				case 18:
+					{
+					int LA6_3 = input.LA(2);
+					if ( (LA6_3==DIGIT||LA6_3==ID||LA6_3==15||(LA6_3 >= 18 && LA6_3 <= 19)) ) {
+						alt6=1;
+					}
+
+					}
+					break;
+				case 13:
+				case 17:
+				case 20:
+				case 27:
+					{
+					alt6=1;
+					}
+					break;
+				}
+				switch (alt6) {
+				case 1 :
+					// Expression.g:141:4: ( '+' | '-' | '/' | '*' | '%' | '^' ) ^ (expr2= atom )
+					{
+					// Expression.g:141:4: ( '+' | '-' | '/' | '*' | '%' | '^' )
+					int alt5=6;
+					switch ( input.LA(1) ) {
+					case 18:
+						{
+						alt5=1;
+						}
+						break;
+					case 19:
+						{
+						alt5=2;
+						}
+						break;
+					case 20:
+						{
+						alt5=3;
+						}
+						break;
+					case 17:
+						{
+						alt5=4;
+						}
+						break;
+					case 13:
+						{
+						alt5=5;
+						}
+						break;
+					case 27:
+						{
+						alt5=6;
+						}
+						break;
+					default:
+						NoViableAltException nvae =
+							new NoViableAltException("", 5, 0, input);
+						throw nvae;
+					}
+					switch (alt5) {
+						case 1 :
+							// Expression.g:142:3: '+'
+							{
+							char_literal11=(Token)match(input,18,FOLLOW_18_in_arithmeticExpression402); 
+							char_literal11_tree = (CommonTree)adaptor.create(char_literal11);
+							adaptor.addChild(root_0, char_literal11_tree);
+
+							retval.arithmeticExpression.setOperator("+");
+							}
+							break;
+						case 2 :
+							// Expression.g:143:4: '-'
+							{
+							char_literal12=(Token)match(input,19,FOLLOW_19_in_arithmeticExpression409); 
+							char_literal12_tree = (CommonTree)adaptor.create(char_literal12);
+							adaptor.addChild(root_0, char_literal12_tree);
+
+							retval.arithmeticExpression.setOperator("-");
+							}
+							break;
+						case 3 :
+							// Expression.g:144:4: '/'
+							{
+							char_literal13=(Token)match(input,20,FOLLOW_20_in_arithmeticExpression415); 
+							char_literal13_tree = (CommonTree)adaptor.create(char_literal13);
+							adaptor.addChild(root_0, char_literal13_tree);
+
+							retval.arithmeticExpression.setOperator("/");
+							}
+							break;
+						case 4 :
+							// Expression.g:145:4: '*'
+							{
+							char_literal14=(Token)match(input,17,FOLLOW_17_in_arithmeticExpression421); 
+							char_literal14_tree = (CommonTree)adaptor.create(char_literal14);
+							adaptor.addChild(root_0, char_literal14_tree);
+
+							retval.arithmeticExpression.setOperator("*");
+							}
+							break;
+						case 5 :
+							// Expression.g:146:4: '%'
+							{
+							char_literal15=(Token)match(input,13,FOLLOW_13_in_arithmeticExpression427); 
+							char_literal15_tree = (CommonTree)adaptor.create(char_literal15);
+							adaptor.addChild(root_0, char_literal15_tree);
+
+							retval.arithmeticExpression.setOperator("%");
+							}
+							break;
+						case 6 :
+							// Expression.g:147:4: '^'
+							{
+							char_literal16=(Token)match(input,27,FOLLOW_27_in_arithmeticExpression433); 
+							char_literal16_tree = (CommonTree)adaptor.create(char_literal16);
+							adaptor.addChild(root_0, char_literal16_tree);
+
+							retval.arithmeticExpression.setOperator("^");
+							}
+							break;
+
+					}
+
+					// Expression.g:150:4: (expr2= atom )
+					// Expression.g:150:5: expr2= atom
+					{
+					pushFollow(FOLLOW_atom_in_arithmeticExpression450);
+					expr2=atom();
+					state._fsp--;
+
+					adaptor.addChild(root_0, expr2.getTree());
+
+
+									expressions.add((expr2!=null?((ExpressionParser.atom_return)expr2).expression:null));
+							
+					}
+
+					}
+					break;
+
+				default :
+					break loop6;
+				}
+			}
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+
+				retval.arithmeticExpression.setExpressions(expressions);
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+			retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "arithmeticExpression"
 
 
 	public static class atom_return extends ParserRuleReturnScope {
-		public Expression<Double> expression;
+		public Expression expression;
 		CommonTree tree;
 		@Override
 		public CommonTree getTree() { return tree; }
@@ -530,99 +879,99 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "atom"
-	// Expression.g:113:1: atom returns [Expression<Double> expression] : (number1= unsignedUnaryExpression |number2= signedUnaryExpression | '(' expr= additiveExpression ')' );
+	// Expression.g:156:1: atom returns [Expression expression] : (atomicExpr= atomicExpression |number1= signedUnaryExpression | '(' expr= expressions ')' );
 	public final ExpressionParser.atom_return atom() throws RecognitionException {
 		ExpressionParser.atom_return retval = new ExpressionParser.atom_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token char_literal9=null;
-		Token char_literal10=null;
+		Token char_literal17=null;
+		Token char_literal18=null;
+		ParserRuleReturnScope atomicExpr =null;
 		ParserRuleReturnScope number1 =null;
-		ParserRuleReturnScope number2 =null;
 		ParserRuleReturnScope expr =null;
 
-		CommonTree char_literal9_tree=null;
-		CommonTree char_literal10_tree=null;
+		CommonTree char_literal17_tree=null;
+		CommonTree char_literal18_tree=null;
 
 		try {
-			// Expression.g:114:3: (number1= unsignedUnaryExpression |number2= signedUnaryExpression | '(' expr= additiveExpression ')' )
-			int alt5=3;
+			// Expression.g:157:3: (atomicExpr= atomicExpression |number1= signedUnaryExpression | '(' expr= expressions ')' )
+			int alt7=3;
 			switch ( input.LA(1) ) {
 			case DIGIT:
 			case ID:
 				{
-				alt5=1;
+				alt7=1;
 				}
 				break;
-			case 16:
-			case 17:
+			case 18:
+			case 19:
 				{
-				alt5=2;
+				alt7=2;
 				}
 				break;
-			case 13:
+			case 15:
 				{
-				alt5=3;
+				alt7=3;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 5, 0, input);
+					new NoViableAltException("", 7, 0, input);
 				throw nvae;
 			}
-			switch (alt5) {
+			switch (alt7) {
 				case 1 :
-					// Expression.g:114:5: number1= unsignedUnaryExpression
+					// Expression.g:157:5: atomicExpr= atomicExpression
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_unsignedUnaryExpression_in_atom318);
-					number1=unsignedUnaryExpression();
+					pushFollow(FOLLOW_atomicExpression_in_atom485);
+					atomicExpr=atomicExpression();
+					state._fsp--;
+
+					adaptor.addChild(root_0, atomicExpr.getTree());
+
+					retval.expression = (atomicExpr!=null?((ExpressionParser.atomicExpression_return)atomicExpr).atomicExpression:null);
+					}
+					break;
+				case 2 :
+					// Expression.g:158:5: number1= signedUnaryExpression
+					{
+					root_0 = (CommonTree)adaptor.nil();
+
+
+					pushFollow(FOLLOW_signedUnaryExpression_in_atom497);
+					number1=signedUnaryExpression();
 					state._fsp--;
 
 					adaptor.addChild(root_0, number1.getTree());
 
-					retval.expression = (number1!=null?((ExpressionParser.unsignedUnaryExpression_return)number1).unsignedUnaryExpression:null);
-					}
-					break;
-				case 2 :
-					// Expression.g:115:5: number2= signedUnaryExpression
-					{
-					root_0 = (CommonTree)adaptor.nil();
-
-
-					pushFollow(FOLLOW_signedUnaryExpression_in_atom330);
-					number2=signedUnaryExpression();
-					state._fsp--;
-
-					adaptor.addChild(root_0, number2.getTree());
-
-					retval.expression = (number2!=null?((ExpressionParser.signedUnaryExpression_return)number2).signedUnaryExpression:null);
+					retval.expression = (number1!=null?((ExpressionParser.signedUnaryExpression_return)number1).signedUnaryExpression:null);
 					}
 					break;
 				case 3 :
-					// Expression.g:116:5: '(' expr= additiveExpression ')'
+					// Expression.g:159:5: '(' expr= expressions ')'
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					char_literal9=(Token)match(input,13,FOLLOW_13_in_atom338); 
-					char_literal9_tree = (CommonTree)adaptor.create(char_literal9);
-					adaptor.addChild(root_0, char_literal9_tree);
+					char_literal17=(Token)match(input,15,FOLLOW_15_in_atom505); 
+					char_literal17_tree = (CommonTree)adaptor.create(char_literal17);
+					adaptor.addChild(root_0, char_literal17_tree);
 
-					pushFollow(FOLLOW_additiveExpression_in_atom344);
-					expr=additiveExpression();
+					pushFollow(FOLLOW_expressions_in_atom511);
+					expr=expressions();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr.getTree());
 
-					retval.expression = (expr!=null?((ExpressionParser.additiveExpression_return)expr).additiveExpression:null);
-					char_literal10=(Token)match(input,14,FOLLOW_14_in_atom348); 
-					char_literal10_tree = (CommonTree)adaptor.create(char_literal10);
-					adaptor.addChild(root_0, char_literal10_tree);
+					retval.expression = (expr!=null?((ExpressionParser.expressions_return)expr).expression:null);
+					char_literal18=(Token)match(input,16,FOLLOW_16_in_atom515); 
+					char_literal18_tree = (CommonTree)adaptor.create(char_literal18);
+					adaptor.addChild(root_0, char_literal18_tree);
 
 					}
 					break;
@@ -647,81 +996,92 @@ public class ExpressionParser extends Parser {
 	// $ANTLR end "atom"
 
 
-	public static class unsignedUnaryExpression_return extends ParserRuleReturnScope {
-		public UnsignedUnaryExpression unsignedUnaryExpression;
+	public static class atomicExpression_return extends ParserRuleReturnScope {
+		public AtomicExpression atomicExpression;
 		CommonTree tree;
 		@Override
 		public CommonTree getTree() { return tree; }
 	};
 
 
-	// $ANTLR start "unsignedUnaryExpression"
-	// Expression.g:119:1: unsignedUnaryExpression returns [UnsignedUnaryExpression unsignedUnaryExpression] : (number1= number | ID );
-	public final ExpressionParser.unsignedUnaryExpression_return unsignedUnaryExpression() throws RecognitionException {
-		ExpressionParser.unsignedUnaryExpression_return retval = new ExpressionParser.unsignedUnaryExpression_return();
+	// $ANTLR start "atomicExpression"
+	// Expression.g:162:1: atomicExpression returns [AtomicExpression atomicExpression] : (number1= number | ID );
+	public final ExpressionParser.atomicExpression_return atomicExpression() throws RecognitionException {
+		ExpressionParser.atomicExpression_return retval = new ExpressionParser.atomicExpression_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token ID11=null;
+		Token ID19=null;
 		ParserRuleReturnScope number1 =null;
 
-		CommonTree ID11_tree=null;
+		CommonTree ID19_tree=null;
 
 
-			retval.unsignedUnaryExpression = new UnsignedUnaryExpression();
+			retval.atomicExpression = new AtomicExpression();
 
 		try {
-			// Expression.g:123:3: (number1= number | ID )
-			int alt6=2;
-			int LA6_0 = input.LA(1);
-			if ( (LA6_0==DIGIT) ) {
-				alt6=1;
+			// Expression.g:166:3: (number1= number | ID )
+			int alt8=2;
+			int LA8_0 = input.LA(1);
+			if ( (LA8_0==DIGIT) ) {
+				alt8=1;
 			}
-			else if ( (LA6_0==ID) ) {
-				alt6=2;
+			else if ( (LA8_0==ID) ) {
+				alt8=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 6, 0, input);
+					new NoViableAltException("", 8, 0, input);
 				throw nvae;
 			}
 
-			switch (alt6) {
+			switch (alt8) {
 				case 1 :
-					// Expression.g:123:5: number1= number
+					// Expression.g:166:5: number1= number
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_number_in_unsignedUnaryExpression376);
+					pushFollow(FOLLOW_number_in_atomicExpression543);
 					number1=number();
 					state._fsp--;
 
 					adaptor.addChild(root_0, number1.getTree());
 
 
-					 		retval.unsignedUnaryExpression.setValue((number1!=null?((ExpressionParser.number_return)number1).value:0.0));
+					 		retval.atomicExpression.setValue((number1!=null?((ExpressionParser.number_return)number1).value:0.0));
 
 					}
 					break;
 				case 2 :
-					// Expression.g:127:5: ID
+					// Expression.g:169:5: ID
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					ID11=(Token)match(input,ID,FOLLOW_ID_in_unsignedUnaryExpression385); 
-					ID11_tree = (CommonTree)adaptor.create(ID11);
-					adaptor.addChild(root_0, ID11_tree);
+					ID19=(Token)match(input,ID,FOLLOW_ID_in_atomicExpression551); 
+					ID19_tree = (CommonTree)adaptor.create(ID19);
+					adaptor.addChild(root_0, ID19_tree);
 
 
-
-					      if(getRow().containsKey((ID11!=null?ID11.getText():null))) {
-					        retval.unsignedUnaryExpression.setValue((double)((Integer)getRow().get((ID11!=null?ID11.getText():null))).intValue());
+					      if(getRow().containsKey((ID19!=null?ID19.getText():null))) {
+					        Object value = getRow().get((ID19!=null?ID19.getText():null));
+					        if(value instanceof Integer) {
+					          retval.atomicExpression.setValue((double)((Integer) value).intValue());
+					        } else {
+					          retval.atomicExpression.setValue(value);
+					        }
 					      } else {
-					        addErrorMessage((ID11!=null?ID11.getLine():0),ID11.getCharPositionInLine(),"unable to resolve value for '"+ (ID11!=null?ID11.getText():null)+"'");
+					      System.out.println((ID19!=null?ID19.getText():null).toString());
+					        if((ID19!=null?ID19.getText():null).toString().equals("true")) {
+					            retval.atomicExpression.setValue(true);
+					        } else if((ID19!=null?ID19.getText():null).toString().equals("false")) {
+					            retval.atomicExpression.setValue(false);
+					        } else {
+					            retval.atomicExpression.setValue((ID19!=null?ID19.getText():null));
+					        }
 					      }
 
 					}
@@ -744,7 +1104,7 @@ public class ExpressionParser extends Parser {
 		}
 		return retval;
 	}
-	// $ANTLR end "unsignedUnaryExpression"
+	// $ANTLR end "atomicExpression"
 
 
 	public static class signedUnaryExpression_return extends ParserRuleReturnScope {
@@ -756,52 +1116,52 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "signedUnaryExpression"
-	// Expression.g:137:1: signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression] : ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) );
+	// Expression.g:190:1: signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression] : ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) );
 	public final ExpressionParser.signedUnaryExpression_return signedUnaryExpression() throws RecognitionException {
 		ExpressionParser.signedUnaryExpression_return retval = new ExpressionParser.signedUnaryExpression_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token char_literal12=null;
-		Token char_literal13=null;
+		Token char_literal20=null;
+		Token char_literal21=null;
 		ParserRuleReturnScope number1 =null;
 		ParserRuleReturnScope number2 =null;
 
-		CommonTree char_literal12_tree=null;
-		CommonTree char_literal13_tree=null;
-		RewriteRuleTokenStream stream_16=new RewriteRuleTokenStream(adaptor,"token 16");
-		RewriteRuleTokenStream stream_17=new RewriteRuleTokenStream(adaptor,"token 17");
+		CommonTree char_literal20_tree=null;
+		CommonTree char_literal21_tree=null;
+		RewriteRuleTokenStream stream_18=new RewriteRuleTokenStream(adaptor,"token 18");
+		RewriteRuleTokenStream stream_19=new RewriteRuleTokenStream(adaptor,"token 19");
 		RewriteRuleSubtreeStream stream_number=new RewriteRuleSubtreeStream(adaptor,"rule number");
 
 
 			retval.signedUnaryExpression = new SignedUnaryExpression();
 
 		try {
-			// Expression.g:141:3: ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) )
-			int alt7=2;
-			int LA7_0 = input.LA(1);
-			if ( (LA7_0==17) ) {
-				alt7=1;
+			// Expression.g:194:3: ( '-' number1= number -> ^( SIGNEDUNARY '-' number ) | '+' number2= number -> ^( SIGNEDUNARY '+' number ) )
+			int alt9=2;
+			int LA9_0 = input.LA(1);
+			if ( (LA9_0==19) ) {
+				alt9=1;
 			}
-			else if ( (LA7_0==16) ) {
-				alt7=2;
+			else if ( (LA9_0==18) ) {
+				alt9=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 7, 0, input);
+					new NoViableAltException("", 9, 0, input);
 				throw nvae;
 			}
 
-			switch (alt7) {
+			switch (alt9) {
 				case 1 :
-					// Expression.g:141:5: '-' number1= number
+					// Expression.g:194:5: '-' number1= number
 					{
-					char_literal12=(Token)match(input,17,FOLLOW_17_in_signedUnaryExpression411);  
-					stream_17.add(char_literal12);
+					char_literal20=(Token)match(input,19,FOLLOW_19_in_signedUnaryExpression575);  
+					stream_19.add(char_literal20);
 
-					pushFollow(FOLLOW_number_in_signedUnaryExpression417);
+					pushFollow(FOLLOW_number_in_signedUnaryExpression581);
 					number1=number();
 					state._fsp--;
 
@@ -811,7 +1171,7 @@ public class ExpressionParser extends Parser {
 					  		retval.signedUnaryExpression.setSign("-");
 					 
 					// AST REWRITE
-					// elements: number, 17
+					// elements: number, 19
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -821,13 +1181,13 @@ public class ExpressionParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 144:4: -> ^( SIGNEDUNARY '-' number )
+					// 197:4: -> ^( SIGNEDUNARY '-' number )
 					{
-						// Expression.g:144:7: ^( SIGNEDUNARY '-' number )
+						// Expression.g:197:7: ^( SIGNEDUNARY '-' number )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(SIGNEDUNARY, "SIGNEDUNARY"), root_1);
-						adaptor.addChild(root_1, stream_17.nextNode());
+						adaptor.addChild(root_1, stream_19.nextNode());
 						adaptor.addChild(root_1, stream_number.nextTree());
 						adaptor.addChild(root_0, root_1);
 						}
@@ -840,12 +1200,12 @@ public class ExpressionParser extends Parser {
 					}
 					break;
 				case 2 :
-					// Expression.g:146:5: '+' number2= number
+					// Expression.g:199:5: '+' number2= number
 					{
-					char_literal13=(Token)match(input,16,FOLLOW_16_in_signedUnaryExpression437);  
-					stream_16.add(char_literal13);
+					char_literal21=(Token)match(input,18,FOLLOW_18_in_signedUnaryExpression601);  
+					stream_18.add(char_literal21);
 
-					pushFollow(FOLLOW_number_in_signedUnaryExpression443);
+					pushFollow(FOLLOW_number_in_signedUnaryExpression607);
 					number2=number();
 					state._fsp--;
 
@@ -855,7 +1215,7 @@ public class ExpressionParser extends Parser {
 					  		retval.signedUnaryExpression.setSign("+");
 					 
 					// AST REWRITE
-					// elements: 16, number
+					// elements: number, 18
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -865,13 +1225,13 @@ public class ExpressionParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 149:4: -> ^( SIGNEDUNARY '+' number )
+					// 202:4: -> ^( SIGNEDUNARY '+' number )
 					{
-						// Expression.g:149:7: ^( SIGNEDUNARY '+' number )
+						// Expression.g:202:7: ^( SIGNEDUNARY '+' number )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(SIGNEDUNARY, "SIGNEDUNARY"), root_1);
-						adaptor.addChild(root_1, stream_16.nextNode());
+						adaptor.addChild(root_1, stream_18.nextNode());
 						adaptor.addChild(root_1, stream_number.nextTree());
 						adaptor.addChild(root_0, root_1);
 						}
@@ -913,7 +1273,7 @@ public class ExpressionParser extends Parser {
 
 
 	// $ANTLR start "number"
-	// Expression.g:153:1: number returns [double value] : digit1= DIGIT ;
+	// Expression.g:206:1: number returns [double value] : digit1= DIGIT ;
 	public final ExpressionParser.number_return number() throws RecognitionException {
 		ExpressionParser.number_return retval = new ExpressionParser.number_return();
 		retval.start = input.LT(1);
@@ -925,13 +1285,13 @@ public class ExpressionParser extends Parser {
 		CommonTree digit1_tree=null;
 
 		try {
-			// Expression.g:154:3: (digit1= DIGIT )
-			// Expression.g:154:6: digit1= DIGIT
+			// Expression.g:207:3: (digit1= DIGIT )
+			// Expression.g:207:6: digit1= DIGIT
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			digit1=(Token)match(input,DIGIT,FOLLOW_DIGIT_in_number480); 
+			digit1=(Token)match(input,DIGIT,FOLLOW_DIGIT_in_number644); 
 			digit1_tree = (CommonTree)adaptor.create(digit1);
 			adaptor.addChild(root_0, digit1_tree);
 
@@ -960,29 +1320,40 @@ public class ExpressionParser extends Parser {
 
 
 
-	public static final BitSet FOLLOW_ID_in_expression129 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_expression131 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_additiveExpression_in_expression137 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression185 = new BitSet(new long[]{0x0000000000030002L});
-	public static final BitSet FOLLOW_16_in_additiveExpression195 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_17_in_additiveExpression199 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression209 = new BitSet(new long[]{0x0000000000030002L});
-	public static final BitSet FOLLOW_atom_in_multiplicativeExpression253 = new BitSet(new long[]{0x0000000000149002L});
-	public static final BitSet FOLLOW_15_in_multiplicativeExpression267 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_18_in_multiplicativeExpression270 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_12_in_multiplicativeExpression273 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_20_in_multiplicativeExpression276 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_atom_in_multiplicativeExpression286 = new BitSet(new long[]{0x0000000000149002L});
-	public static final BitSet FOLLOW_unsignedUnaryExpression_in_atom318 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_signedUnaryExpression_in_atom330 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_13_in_atom338 = new BitSet(new long[]{0x0000000000032240L});
-	public static final BitSet FOLLOW_additiveExpression_in_atom344 = new BitSet(new long[]{0x0000000000004000L});
-	public static final BitSet FOLLOW_14_in_atom348 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_number_in_unsignedUnaryExpression376 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_unsignedUnaryExpression385 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_17_in_signedUnaryExpression411 = new BitSet(new long[]{0x0000000000000040L});
-	public static final BitSet FOLLOW_number_in_signedUnaryExpression417 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_16_in_signedUnaryExpression437 = new BitSet(new long[]{0x0000000000000040L});
-	public static final BitSet FOLLOW_number_in_signedUnaryExpression443 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_DIGIT_in_number480 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_expression124 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_23_in_expression126 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_expressions_in_expression132 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_logicalExpression_in_expressions169 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression207 = new BitSet(new long[]{0x0000000010004002L});
+	public static final BitSet FOLLOW_14_in_logicalExpression220 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_28_in_logicalExpression226 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_relationalExpression_in_logicalExpression243 = new BitSet(new long[]{0x0000000010004002L});
+	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression287 = new BitSet(new long[]{0x00000000076C9242L});
+	public static final BitSet FOLLOW_24_in_relationalExpression300 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_12_in_relationalExpression306 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_25_in_relationalExpression312 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_21_in_relationalExpression318 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_22_in_relationalExpression324 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_26_in_relationalExpression330 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_arithmeticExpression_in_relationalExpression346 = new BitSet(new long[]{0x00000000076C9242L});
+	public static final BitSet FOLLOW_atom_in_arithmeticExpression390 = new BitSet(new long[]{0x00000000081E2002L});
+	public static final BitSet FOLLOW_18_in_arithmeticExpression402 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_19_in_arithmeticExpression409 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_20_in_arithmeticExpression415 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_17_in_arithmeticExpression421 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_13_in_arithmeticExpression427 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_27_in_arithmeticExpression433 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_atom_in_arithmeticExpression450 = new BitSet(new long[]{0x00000000081E2002L});
+	public static final BitSet FOLLOW_atomicExpression_in_atom485 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_signedUnaryExpression_in_atom497 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_15_in_atom505 = new BitSet(new long[]{0x00000000000C8240L});
+	public static final BitSet FOLLOW_expressions_in_atom511 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_atom515 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_number_in_atomicExpression543 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_atomicExpression551 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_19_in_signedUnaryExpression575 = new BitSet(new long[]{0x0000000000000040L});
+	public static final BitSet FOLLOW_number_in_signedUnaryExpression581 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_18_in_signedUnaryExpression601 = new BitSet(new long[]{0x0000000000000040L});
+	public static final BitSet FOLLOW_number_in_signedUnaryExpression607 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_DIGIT_in_number644 = new BitSet(new long[]{0x0000000000000002L});
 }

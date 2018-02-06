@@ -2,7 +2,7 @@ package com.logpoint.libquery.expressions.arithmetic;
 
 import com.logpoint.libquery.expressions.Expression;
 
-public class SignedUnaryExpression extends UnaryArithmeticExpression implements Expression<Double> {
+public class SignedUnaryExpression extends UnaryExpression implements Expression {
     String sign;
 
     public void setSign(String sign) {
@@ -16,7 +16,7 @@ public class SignedUnaryExpression extends UnaryArithmeticExpression implements 
 
     @Override
     public Double evaluateExpression() {
-        return getSign().equals("+")?(+getValue()):(-getValue());
+        return getSign().equals("+")?(+(double)getValue()):(-(double)getValue());
     }
 }
 

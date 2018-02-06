@@ -25,22 +25,21 @@ tokens {
 	import com.logpoint.libquery.expressions.arithmetic.*;
 	import com.logpoint.libquery.expressions.*;
 	import com.logpoint.libquery.exceptions.*;
+	import java.util.HashMap;
+    import java.util.Map;
 }
 
 @parser::members {
-        private List<String> functions=createFunctionsList();
-        public List<String> createFunctionsList() {
-            List<String> functions=new ArrayList<String>();
-            functions.add("exp");
-            functions.add("expe");
-            functions.add("exp2");
-            functions.add("exp10");
-            functions.add("log");
-            functions.add("log2");
-            functions.add("loge");
-            functions.add("log10");     
-            return functions;     
+        Map<String, Object> row = new HashMap<String, Object>();
+
+        public void setRow(Map<String, Object> rowParam) {
+            row = rowParam;
         }
+
+        public Map<String, Object> getRow() {
+            return row;
+        }
+
         private List<String> errors = new LinkedList<String>();
         public void displayRecognitionError(String[] tokenNames,
                                         RecognitionException e) {
@@ -114,6 +113,7 @@ multiplicativeExpression returns [BinaryArithmeticExpression multiplicativeExpre
 atom returns [Expression<Double> expression]
   : number1 = unsignedUnaryExpression {$expression = $number1.unsignedUnaryExpression;}
   | number2 = signedUnaryExpression {$expression = $number2.signedUnaryExpression;}
+  | '(' expr = additiveExpression {$expression = $expr.additiveExpression;} ')'
   ;
   
 unsignedUnaryExpression returns [UnsignedUnaryExpression unsignedUnaryExpression]
@@ -122,6 +122,15 @@ unsignedUnaryExpression returns [UnsignedUnaryExpression unsignedUnaryExpression
 }
   : number1 = number {
  		$unsignedUnaryExpression.setValue($number1.value);
+}
+
+  | ID {
+
+      if(getRow().containsKey($ID.text)) {
+        $unsignedUnaryExpression.setValue((double)((Integer)getRow().get($ID.text)).intValue());
+      } else {
+        addErrorMessage($ID.line,$ID.getCharPositionInLine(),"unable to resolve value for '"+ $ID.text+"'");
+      }
 }
   ;
   

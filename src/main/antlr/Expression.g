@@ -70,70 +70,123 @@ tokens {
 }
 
 expression returns [Expression expression] throws ParseException
-@init {
-	$expression = new BinaryArithmeticExpression();
-}
-	:   ID '=' expr = additiveExpression {$expression = $expr.additiveExpression;} -> ^(EQUALS ID additiveExpression)
+	:   ID '=' expr = expressions {$expression = $expr.expression;} -> ^(EQUALS ID expressions)
     ;
 
-additiveExpression returns [BinaryArithmeticExpression additiveExpression]
+expressions returns [Expression expression]
+    : expr1 = logicalExpression {$expression = $expr1.logicalExpression;}
+    ;
+
+logicalExpression returns [LogicalExpression logicalExpression]
 @init {
-	$additiveExpression = new BinaryArithmeticExpression();
-	List<Expression<Double>> expressions = new ArrayList<Expression<Double>>();
+	$logicalExpression = new LogicalExpression();
+	List<Expression> expressions = new ArrayList<Expression>();
 }
 
 @after {
-	$additiveExpression.setExpressions(expressions);
+	$logicalExpression.setExpressions(expressions);
 }
-	:   (expr1 = multiplicativeExpression {
-				expressions.add($expr1.multiplicativeExpression);
-			}
-		) (('+' {$additiveExpression.setOperator('+');}|'-'{$additiveExpression.setOperator('-');})^ (expr2 = multiplicativeExpression {
-				expressions.add($expr2.multiplicativeExpression);
-			}))*
+	:   (expr1 = relationalExpression {
+				expressions.add($expr1.relationalExpression);
+		})
+		((
+		 '&&'{$logicalExpression.setOperator("&&");}
+		|'||'{$logicalExpression.setOperator("||");}
+
+		)^
+		 (expr2 = relationalExpression {
+				expressions.add($expr2.relationalExpression);
+		})
+		)*
     ;
 
-multiplicativeExpression returns [BinaryArithmeticExpression multiplicativeExpression]
+relationalExpression returns [RelationalExpression relationalExpression]
 @init {
-	$multiplicativeExpression = new BinaryArithmeticExpression();
-	List<Expression<Double>> expressions = new ArrayList<Expression<Double>>();
+	$relationalExpression = new RelationalExpression();
+	List<Expression> expressions = new ArrayList<Expression>();
 }
 
 @after {
-	$multiplicativeExpression.setExpressions(expressions);
+	$relationalExpression.setExpressions(expressions);
 }
-    :   (expr1 = atom {
-    				expressions.add($expr1.expression);
-    			}
-    		) (('*'{$multiplicativeExpression.setOperator('*');}|'/'{$multiplicativeExpression.setOperator('/');}|'%'{$multiplicativeExpression.setOperator('\%');}|'^'{$multiplicativeExpression.setOperator('^');})^ (expr2 = atom {
-    				expressions.add($expr2.expression);
-    		}))*
+	:   (expr1 = arithmeticExpression {
+				expressions.add($expr1.arithmeticExpression);
+		})
+		((
+		|'=='{$relationalExpression.setOperator("==");}
+		|'!='{$relationalExpression.setOperator("!=");}
+		|'>'{$relationalExpression.setOperator(">");}
+		|'<'{$relationalExpression.setOperator("<");}
+		|'<='{$relationalExpression.setOperator("<=");}
+		|'>='{$relationalExpression.setOperator(">=");}
+		)^
+		 (expr2 = arithmeticExpression {
+				expressions.add($expr2.arithmeticExpression);
+		})
+		)*
+    ;
+
+arithmeticExpression returns [ArithmeticExpression arithmeticExpression]
+@init {
+	$arithmeticExpression = new ArithmeticExpression();
+	List<Expression> expressions = new ArrayList<Expression>();
+}
+
+@after {
+	$arithmeticExpression.setExpressions(expressions);
+}
+	:   (expr1 = atom {
+				expressions.add($expr1.expression);
+		})
+		((
+		'+' {$arithmeticExpression.setOperator("+");}
+		|'-'{$arithmeticExpression.setOperator("-");}
+		|'/'{$arithmeticExpression.setOperator("/");}
+		|'*'{$arithmeticExpression.setOperator("*");}
+		|'%'{$arithmeticExpression.setOperator("\%");}
+		|'^'{$arithmeticExpression.setOperator("^");}
+
+		)^
+		 (expr2 = atom {
+				expressions.add($expr2.expression);
+		})
+		)*
     ;
     
-atom returns [Expression<Double> expression]
-  : number1 = unsignedUnaryExpression {$expression = $number1.unsignedUnaryExpression;}
-  | number2 = signedUnaryExpression {$expression = $number2.signedUnaryExpression;}
-  | '(' expr = additiveExpression {$expression = $expr.additiveExpression;} ')'
+atom returns [Expression expression]
+  : atomicExpr = atomicExpression {$expression = $atomicExpr.atomicExpression;}
+  | number1 = signedUnaryExpression {$expression = $number1.signedUnaryExpression;}
+  | '(' expr = expressions {$expression = $expr.expression;} ')'
   ;
   
-unsignedUnaryExpression returns [UnsignedUnaryExpression unsignedUnaryExpression]
+atomicExpression returns [AtomicExpression atomicExpression]
 @init {
-	$unsignedUnaryExpression = new UnsignedUnaryExpression();
+	$atomicExpression = new AtomicExpression();
 }
   : number1 = number {
- 		$unsignedUnaryExpression.setValue($number1.value);
+ 		$atomicExpression.setValue($number1.value);
 }
-
   | ID {
-
       if(getRow().containsKey($ID.text)) {
-        $unsignedUnaryExpression.setValue((double)((Integer)getRow().get($ID.text)).intValue());
+        Object value = getRow().get($ID.text);
+        if(value instanceof Integer) {
+          $atomicExpression.setValue((double)((Integer) value).intValue());
+        } else {
+          $atomicExpression.setValue(value);
+        }
       } else {
-        addErrorMessage($ID.line,$ID.getCharPositionInLine(),"unable to resolve value for '"+ $ID.text+"'");
+      System.out.println($ID.text.toString());
+        if($ID.text.toString().equals("true")) {
+            $atomicExpression.setValue(true);
+        } else if($ID.text.toString().equals("false")) {
+            $atomicExpression.setValue(false);
+        } else {
+            $atomicExpression.setValue($ID.text);
+        }
       }
 }
   ;
-  
+
 signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression]
 @init {
 	$signedUnaryExpression = new SignedUnaryExpression();

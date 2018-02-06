@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Expression.g 2018-02-05 16:35:49
+// $ANTLR 3.5.2 Expression.g 2018-02-06 23:05:34
 
 	package com.logpoint.libquery.grammar;
     import java.util.LinkedList;
@@ -22,6 +22,14 @@ public class ExpressionLexer extends Lexer {
 	public static final int T__18=18;
 	public static final int T__19=19;
 	public static final int T__20=20;
+	public static final int T__21=21;
+	public static final int T__22=22;
+	public static final int T__23=23;
+	public static final int T__24=24;
+	public static final int T__25=25;
+	public static final int T__26=26;
+	public static final int T__27=27;
+	public static final int T__28=28;
 	public static final int CALL=4;
 	public static final int CALLSIGNEDUNARY=5;
 	public static final int DIGIT=6;
@@ -63,10 +71,11 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__12;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:20:7: ( '%' )
-			// Expression.g:20:9: '%'
+			// Expression.g:20:7: ( '!=' )
+			// Expression.g:20:9: '!='
 			{
-			match('%'); 
+			match("!="); 
+
 			}
 
 			state.type = _type;
@@ -83,10 +92,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__13;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:21:7: ( '(' )
-			// Expression.g:21:9: '('
+			// Expression.g:21:7: ( '%' )
+			// Expression.g:21:9: '%'
 			{
-			match('('); 
+			match('%'); 
 			}
 
 			state.type = _type;
@@ -103,10 +112,11 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__14;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:22:7: ( ')' )
-			// Expression.g:22:9: ')'
+			// Expression.g:22:7: ( '&&' )
+			// Expression.g:22:9: '&&'
 			{
-			match(')'); 
+			match("&&"); 
+
 			}
 
 			state.type = _type;
@@ -123,10 +133,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__15;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:23:7: ( '*' )
-			// Expression.g:23:9: '*'
+			// Expression.g:23:7: ( '(' )
+			// Expression.g:23:9: '('
 			{
-			match('*'); 
+			match('('); 
 			}
 
 			state.type = _type;
@@ -143,10 +153,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__16;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:24:7: ( '+' )
-			// Expression.g:24:9: '+'
+			// Expression.g:24:7: ( ')' )
+			// Expression.g:24:9: ')'
 			{
-			match('+'); 
+			match(')'); 
 			}
 
 			state.type = _type;
@@ -163,10 +173,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__17;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:25:7: ( '-' )
-			// Expression.g:25:9: '-'
+			// Expression.g:25:7: ( '*' )
+			// Expression.g:25:9: '*'
 			{
-			match('-'); 
+			match('*'); 
 			}
 
 			state.type = _type;
@@ -183,10 +193,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__18;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:26:7: ( '/' )
-			// Expression.g:26:9: '/'
+			// Expression.g:26:7: ( '+' )
+			// Expression.g:26:9: '+'
 			{
-			match('/'); 
+			match('+'); 
 			}
 
 			state.type = _type;
@@ -203,10 +213,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__19;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:27:7: ( '=' )
-			// Expression.g:27:9: '='
+			// Expression.g:27:7: ( '-' )
+			// Expression.g:27:9: '-'
 			{
-			match('='); 
+			match('-'); 
 			}
 
 			state.type = _type;
@@ -223,10 +233,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = T__20;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:28:7: ( '^' )
-			// Expression.g:28:9: '^'
+			// Expression.g:28:7: ( '/' )
+			// Expression.g:28:9: '/'
 			{
-			match('^'); 
+			match('/'); 
 			}
 
 			state.type = _type;
@@ -238,13 +248,177 @@ public class ExpressionLexer extends Lexer {
 	}
 	// $ANTLR end "T__20"
 
+	// $ANTLR start "T__21"
+	public final void mT__21() throws RecognitionException {
+		try {
+			int _type = T__21;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:29:7: ( '<' )
+			// Expression.g:29:9: '<'
+			{
+			match('<'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__21"
+
+	// $ANTLR start "T__22"
+	public final void mT__22() throws RecognitionException {
+		try {
+			int _type = T__22;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:30:7: ( '<=' )
+			// Expression.g:30:9: '<='
+			{
+			match("<="); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__22"
+
+	// $ANTLR start "T__23"
+	public final void mT__23() throws RecognitionException {
+		try {
+			int _type = T__23;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:31:7: ( '=' )
+			// Expression.g:31:9: '='
+			{
+			match('='); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__23"
+
+	// $ANTLR start "T__24"
+	public final void mT__24() throws RecognitionException {
+		try {
+			int _type = T__24;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:32:7: ( '==' )
+			// Expression.g:32:9: '=='
+			{
+			match("=="); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__24"
+
+	// $ANTLR start "T__25"
+	public final void mT__25() throws RecognitionException {
+		try {
+			int _type = T__25;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:33:7: ( '>' )
+			// Expression.g:33:9: '>'
+			{
+			match('>'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__25"
+
+	// $ANTLR start "T__26"
+	public final void mT__26() throws RecognitionException {
+		try {
+			int _type = T__26;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:34:7: ( '>=' )
+			// Expression.g:34:9: '>='
+			{
+			match(">="); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__26"
+
+	// $ANTLR start "T__27"
+	public final void mT__27() throws RecognitionException {
+		try {
+			int _type = T__27;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:35:7: ( '^' )
+			// Expression.g:35:9: '^'
+			{
+			match('^'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__27"
+
+	// $ANTLR start "T__28"
+	public final void mT__28() throws RecognitionException {
+		try {
+			int _type = T__28;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Expression.g:36:7: ( '||' )
+			// Expression.g:36:9: '||'
+			{
+			match("||"); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__28"
+
 	// $ANTLR start "ID"
 	public final void mID() throws RecognitionException {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:158:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )* )
-			// Expression.g:158:6: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )*
+			// Expression.g:211:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )* )
+			// Expression.g:211:6: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )*
 			{
 			if ( input.LA(1)=='\"'||input.LA(1)=='.'||input.LA(1)=='?'||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 				input.consume();
@@ -254,7 +428,7 @@ public class ExpressionLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// Expression.g:158:52: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )*
+			// Expression.g:211:52: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '.' | '?' | '\"' | DIGIT )*
 			loop1:
 			while (true) {
 				int alt1=8;
@@ -356,43 +530,43 @@ public class ExpressionLexer extends Lexer {
 				}
 				switch (alt1) {
 				case 1 :
-					// Expression.g:158:53: 'a' .. 'z'
+					// Expression.g:211:53: 'a' .. 'z'
 					{
 					matchRange('a','z'); 
 					}
 					break;
 				case 2 :
-					// Expression.g:158:64: 'A' .. 'Z'
+					// Expression.g:211:64: 'A' .. 'Z'
 					{
 					matchRange('A','Z'); 
 					}
 					break;
 				case 3 :
-					// Expression.g:158:75: '_'
+					// Expression.g:211:75: '_'
 					{
 					match('_'); 
 					}
 					break;
 				case 4 :
-					// Expression.g:158:81: '.'
+					// Expression.g:211:81: '.'
 					{
 					match('.'); 
 					}
 					break;
 				case 5 :
-					// Expression.g:158:87: '?'
+					// Expression.g:211:87: '?'
 					{
 					match('?'); 
 					}
 					break;
 				case 6 :
-					// Expression.g:158:93: '\"'
+					// Expression.g:211:93: '\"'
 					{
 					match('\"'); 
 					}
 					break;
 				case 7 :
-					// Expression.g:158:98: DIGIT
+					// Expression.g:211:98: DIGIT
 					{
 					mDIGIT(); 
 
@@ -420,10 +594,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = DIGIT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:162:3: ( ( '0' .. '9' )+ )
-			// Expression.g:162:6: ( '0' .. '9' )+
+			// Expression.g:215:3: ( ( '0' .. '9' )+ )
+			// Expression.g:215:6: ( '0' .. '9' )+
 			{
-			// Expression.g:162:6: ( '0' .. '9' )+
+			// Expression.g:215:6: ( '0' .. '9' )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -472,10 +646,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:165:5: ( ( ' ' | '\\t' )+ )
-			// Expression.g:165:9: ( ' ' | '\\t' )+
+			// Expression.g:218:5: ( ( ' ' | '\\t' )+ )
+			// Expression.g:218:9: ( ' ' | '\\t' )+
 			{
-			// Expression.g:165:9: ( ' ' | '\\t' )+
+			// Expression.g:218:9: ( ' ' | '\\t' )+
 			int cnt3=0;
 			loop3:
 			while (true) {
@@ -522,52 +696,101 @@ public class ExpressionLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// Expression.g:1:8: ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | ID | DIGIT | WS )
-		int alt4=12;
+		// Expression.g:1:8: ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | ID | DIGIT | WS )
+		int alt4=20;
 		switch ( input.LA(1) ) {
-		case '%':
+		case '!':
 			{
 			alt4=1;
 			}
 			break;
-		case '(':
+		case '%':
 			{
 			alt4=2;
 			}
 			break;
-		case ')':
+		case '&':
 			{
 			alt4=3;
 			}
 			break;
-		case '*':
+		case '(':
 			{
 			alt4=4;
 			}
 			break;
-		case '+':
+		case ')':
 			{
 			alt4=5;
 			}
 			break;
-		case '-':
+		case '*':
 			{
 			alt4=6;
 			}
 			break;
-		case '/':
+		case '+':
 			{
 			alt4=7;
 			}
 			break;
-		case '=':
+		case '-':
 			{
 			alt4=8;
 			}
 			break;
-		case '^':
+		case '/':
 			{
 			alt4=9;
+			}
+			break;
+		case '<':
+			{
+			int LA4_10 = input.LA(2);
+			if ( (LA4_10=='=') ) {
+				alt4=11;
+			}
+
+			else {
+				alt4=10;
+			}
+
+			}
+			break;
+		case '=':
+			{
+			int LA4_11 = input.LA(2);
+			if ( (LA4_11=='=') ) {
+				alt4=13;
+			}
+
+			else {
+				alt4=12;
+			}
+
+			}
+			break;
+		case '>':
+			{
+			int LA4_12 = input.LA(2);
+			if ( (LA4_12=='=') ) {
+				alt4=15;
+			}
+
+			else {
+				alt4=14;
+			}
+
+			}
+			break;
+		case '^':
+			{
+			alt4=16;
+			}
+			break;
+		case '|':
+			{
+			alt4=17;
 			}
 			break;
 		case '\"':
@@ -627,7 +850,7 @@ public class ExpressionLexer extends Lexer {
 		case 'y':
 		case 'z':
 			{
-			alt4=10;
+			alt4=18;
 			}
 			break;
 		case '0':
@@ -641,13 +864,13 @@ public class ExpressionLexer extends Lexer {
 		case '8':
 		case '9':
 			{
-			alt4=11;
+			alt4=19;
 			}
 			break;
 		case '\t':
 		case ' ':
 			{
-			alt4=12;
+			alt4=20;
 			}
 			break;
 		default:
@@ -720,21 +943,77 @@ public class ExpressionLexer extends Lexer {
 				}
 				break;
 			case 10 :
-				// Expression.g:1:64: ID
+				// Expression.g:1:64: T__21
+				{
+				mT__21(); 
+
+				}
+				break;
+			case 11 :
+				// Expression.g:1:70: T__22
+				{
+				mT__22(); 
+
+				}
+				break;
+			case 12 :
+				// Expression.g:1:76: T__23
+				{
+				mT__23(); 
+
+				}
+				break;
+			case 13 :
+				// Expression.g:1:82: T__24
+				{
+				mT__24(); 
+
+				}
+				break;
+			case 14 :
+				// Expression.g:1:88: T__25
+				{
+				mT__25(); 
+
+				}
+				break;
+			case 15 :
+				// Expression.g:1:94: T__26
+				{
+				mT__26(); 
+
+				}
+				break;
+			case 16 :
+				// Expression.g:1:100: T__27
+				{
+				mT__27(); 
+
+				}
+				break;
+			case 17 :
+				// Expression.g:1:106: T__28
+				{
+				mT__28(); 
+
+				}
+				break;
+			case 18 :
+				// Expression.g:1:112: ID
 				{
 				mID(); 
 
 				}
 				break;
-			case 11 :
-				// Expression.g:1:67: DIGIT
+			case 19 :
+				// Expression.g:1:115: DIGIT
 				{
 				mDIGIT(); 
 
 				}
 				break;
-			case 12 :
-				// Expression.g:1:73: WS
+			case 20 :
+				// Expression.g:1:121: WS
 				{
 				mWS(); 
 
