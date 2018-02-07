@@ -17,7 +17,7 @@ import com.logpoint.libquery.expressions.Expression;
 
 public class ExpressionQueryParser {
     public void parseQuery(String searchQuery, Map<String, Object> row) throws ParseException, RecognitionException, InvalidOperationException {
-        ExpressionParser parser = getSearchQueryParser(searchQuery);
+        ExpressionParser parser = getExpressionParser(searchQuery);
         parser.setRow(row);
         ExpressionParser.expression_return parsedExpression = parser.expression();
         Tree tree = parsedExpression.getTree();
@@ -31,7 +31,7 @@ public class ExpressionQueryParser {
         row.put(tree.getChild(0).getText(), result);
     }
 
-    public ExpressionParser getSearchQueryParser(String searchQuery) {
+    public ExpressionParser getExpressionParser(String searchQuery) {
         ANTLRNoCaseStringStream in = null;
         try {
             in = new ANTLRNoCaseStringStream(searchQuery);

@@ -15,18 +15,19 @@ tokens {
     EQUALS;
 }
 @lexer::header {
-	package com.logpoint.libquery.grammar;
+  package com.logpoint.libquery.grammar;
     import java.util.LinkedList;
-                
+
 }
 @parser::header {
-	package com.logpoint.libquery.grammar;
-	import java.util.LinkedList;
-	import com.logpoint.libquery.expressions.arithmetic.*;
-	import com.logpoint.libquery.expressions.*;
-	import com.logpoint.libquery.exceptions.*;
-	import java.util.HashMap;
-    import java.util.Map;
+  package com.logpoint.libquery.grammar;
+  import java.util.LinkedList;
+  import com.logpoint.libquery.expressions.arithmetic.*;
+  import com.logpoint.libquery.expressions.conditional.*;
+  import com.logpoint.libquery.expressions.*;
+  import com.logpoint.libquery.exceptions.*;
+  import java.util.HashMap;
+  import java.util.Map;
 }
 
 @parser::members {
@@ -53,7 +54,7 @@ tokens {
         public void addErrorMessage(int line,int column,String message){
             errors.add("line "+line+":"+column+" "+message);
         }
-        
+
 }
 
 @lexer::members {
@@ -70,101 +71,128 @@ tokens {
 }
 
 expression returns [Expression expression] throws ParseException
-	:   ID '=' expr = expressions {$expression = $expr.expression;} -> ^(EQUALS ID expressions)
+  :   ID '=' expr = expressions {$expression = $expr.expression;} -> ^(EQUALS ID expressions)
     ;
 
 expressions returns [Expression expression]
     : expr1 = logicalExpression {$expression = $expr1.logicalExpression;}
+    | expr2 = ifStatementExpression {$expression = $expr2.ifStatementExpression;}
+    | expr3 = caseStatementExpression {$expression = $expr3.caseStatementExpression;}
     ;
+
+ifStatementExpression returns [IfStatementExpression ifStatementExpression]
+@init {
+  $ifStatementExpression = new IfStatementExpression();
+}
+    : IF LPARAM condition = expressions {$ifStatementExpression.setCondition($condition.expression);}
+      COMMA trueValue = expressions {$ifStatementExpression.setTrueValue($trueValue.expression);}
+      COMMA falseValue = expressions {$ifStatementExpression.setFalseValue($falseValue.expression);} RPARAM
+    ;
+
+caseStatementExpression returns [CaseStatementExpression caseStatementExpression]
+@init {
+  $caseStatementExpression = new CaseStatementExpression();
+  List<Expression> expressions = new ArrayList<Expression>();
+  List<Expression> values  = new ArrayList<Expression>();
+}
+@after {
+  $caseStatementExpression.setExpressions(expressions);
+  $caseStatementExpression.setValues(values);
+}
+    : CASE LPARAM condition1 = expressions {expressions.add($condition1.expression);} COMMA value1 = expressions {values.add($value1.expression);}
+      (COMMA condition2 = expressions {expressions.add($condition2.expression);} COMMA value2 = expressions {values.add($value2.expression);})*
+      COMMA DEFAULT COMMA defaultValue = expressions {$caseStatementExpression.setDefaultValue($defaultValue.expression);} RPARAM
+    ;
+
 
 logicalExpression returns [LogicalExpression logicalExpression]
 @init {
-	$logicalExpression = new LogicalExpression();
-	List<Expression> expressions = new ArrayList<Expression>();
+  $logicalExpression = new LogicalExpression();
+  List<Expression> expressions = new ArrayList<Expression>();
 }
 
 @after {
-	$logicalExpression.setExpressions(expressions);
+  $logicalExpression.setExpressions(expressions);
 }
-	:   (expr1 = relationalExpression {
-				expressions.add($expr1.relationalExpression);
-		})
-		((
-		 '&&'{$logicalExpression.setOperator("&&");}
-		|'||'{$logicalExpression.setOperator("||");}
+  :   (expr1 = relationalExpression {
+        expressions.add($expr1.relationalExpression);
+    })
+    ((
+     '&&'{$logicalExpression.setOperator("&&");}
+    |'||'{$logicalExpression.setOperator("||");}
 
-		)^
-		 (expr2 = relationalExpression {
-				expressions.add($expr2.relationalExpression);
-		})
-		)*
+    )^
+     (expr2 = relationalExpression {
+        expressions.add($expr2.relationalExpression);
+    })
+    )*
     ;
 
 relationalExpression returns [RelationalExpression relationalExpression]
 @init {
-	$relationalExpression = new RelationalExpression();
-	List<Expression> expressions = new ArrayList<Expression>();
+  $relationalExpression = new RelationalExpression();
+  List<Expression> expressions = new ArrayList<Expression>();
 }
 
 @after {
-	$relationalExpression.setExpressions(expressions);
+  $relationalExpression.setExpressions(expressions);
 }
-	:   (expr1 = arithmeticExpression {
-				expressions.add($expr1.arithmeticExpression);
-		})
-		((
-		|'=='{$relationalExpression.setOperator("==");}
-		|'!='{$relationalExpression.setOperator("!=");}
-		|'>'{$relationalExpression.setOperator(">");}
-		|'<'{$relationalExpression.setOperator("<");}
-		|'<='{$relationalExpression.setOperator("<=");}
-		|'>='{$relationalExpression.setOperator(">=");}
-		)^
-		 (expr2 = arithmeticExpression {
-				expressions.add($expr2.arithmeticExpression);
-		})
-		)*
+  :   (expr1 = arithmeticExpression {
+        expressions.add($expr1.arithmeticExpression);
+    })
+    ((
+    |'=='{$relationalExpression.setOperator("==");}
+    |'!='{$relationalExpression.setOperator("!=");}
+    |'>'{$relationalExpression.setOperator(">");}
+    |'<'{$relationalExpression.setOperator("<");}
+    |'<='{$relationalExpression.setOperator("<=");}
+    |'>='{$relationalExpression.setOperator(">=");}
+    )^
+     (expr2 = arithmeticExpression {
+        expressions.add($expr2.arithmeticExpression);
+    })
+    )*
     ;
 
 arithmeticExpression returns [ArithmeticExpression arithmeticExpression]
 @init {
-	$arithmeticExpression = new ArithmeticExpression();
-	List<Expression> expressions = new ArrayList<Expression>();
+  $arithmeticExpression = new ArithmeticExpression();
+  List<Expression> expressions = new ArrayList<Expression>();
 }
 
 @after {
-	$arithmeticExpression.setExpressions(expressions);
+  $arithmeticExpression.setExpressions(expressions);
 }
-	:   (expr1 = atom {
-				expressions.add($expr1.expression);
-		})
-		((
-		'+' {$arithmeticExpression.setOperator("+");}
-		|'-'{$arithmeticExpression.setOperator("-");}
-		|'/'{$arithmeticExpression.setOperator("/");}
-		|'*'{$arithmeticExpression.setOperator("*");}
-		|'%'{$arithmeticExpression.setOperator("\%");}
-		|'^'{$arithmeticExpression.setOperator("^");}
+  :   (expr1 = atom {
+        expressions.add($expr1.expression);
+    })
+    ((
+    '+' {$arithmeticExpression.setOperator("+");}
+    |'-'{$arithmeticExpression.setOperator("-");}
+    |'/'{$arithmeticExpression.setOperator("/");}
+    |'*'{$arithmeticExpression.setOperator("*");}
+    |'%'{$arithmeticExpression.setOperator("\%");}
+    |'^'{$arithmeticExpression.setOperator("^");}
 
-		)^
-		 (expr2 = atom {
-				expressions.add($expr2.expression);
-		})
-		)*
+    )^
+     (expr2 = atom {
+        expressions.add($expr2.expression);
+    })
+    )*
     ;
-    
+
 atom returns [Expression expression]
   : atomicExpr = atomicExpression {$expression = $atomicExpr.atomicExpression;}
   | number1 = signedUnaryExpression {$expression = $number1.signedUnaryExpression;}
   | '(' expr = expressions {$expression = $expr.expression;} ')'
   ;
-  
+
 atomicExpression returns [AtomicExpression atomicExpression]
 @init {
-	$atomicExpression = new AtomicExpression();
+  $atomicExpression = new AtomicExpression();
 }
   : number1 = number {
- 		$atomicExpression.setValue($number1.value);
+    $atomicExpression.setValue($number1.value);
 }
   | ID {
       if(getRow().containsKey($ID.text)) {
@@ -188,23 +216,31 @@ atomicExpression returns [AtomicExpression atomicExpression]
 
 signedUnaryExpression returns [SignedUnaryExpression signedUnaryExpression]
 @init {
-	$signedUnaryExpression = new SignedUnaryExpression();
+  $signedUnaryExpression = new SignedUnaryExpression();
 }
   : '-' number1 = number {
-  		$signedUnaryExpression.setValue($number1.value);
-  		$signedUnaryExpression.setSign("-");
+      $signedUnaryExpression.setValue($number1.value);
+      $signedUnaryExpression.setSign("-");
  } -> ^(SIGNEDUNARY '-' number)
- 
+
   | '+' number2 = number {
-  		$signedUnaryExpression.setValue($number2.value);
-  		$signedUnaryExpression.setSign("+");
+      $signedUnaryExpression.setValue($number2.value);
+      $signedUnaryExpression.setSign("+");
  } -> ^(SIGNEDUNARY '+' number)
   ;
 
-  
+
 number returns [double value]
   :  digit1 = NUMERIC {$value = Double.parseDouble($digit1.text.toString());}
   ;
+
+
+IF  : 'IF';
+CASE  : 'CASE';
+DEFAULT : 'DEFAULT';
+LPARAM  : '(';
+RPARAM  : ')';
+COMMA   : ',';
 
 ID
   :  ('a'..'z' | 'A'..'Z' | '_' | '.' | '?' | '"') ('a'..'z' | 'A'..'Z' | '_' | '.' | '?' | '"' |DIGIT)*
@@ -221,7 +257,7 @@ EXPONENT
   ;
 
 fragment
-DIGIT  
+DIGIT
   :  '0'..'9'
   ;
 

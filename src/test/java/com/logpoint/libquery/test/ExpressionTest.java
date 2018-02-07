@@ -223,6 +223,7 @@ public class ExpressionTest {
 
         assertEquals(row.get("identifier"), true);
     }
+
     @Test
     public void ExpressionQueryParser_ShouldPerformNotEqualsOperationForString() {
         try {
@@ -331,4 +332,63 @@ public class ExpressionTest {
         assertEquals(row.get("identifier"), null);
     }
 
+    @Test
+    public void ExpressionQueryParser_ShouldPerformIfStatementExpression() {
+        try {
+            expressionQueryParser.parseQuery("identifier=if(datasize<1000, true,false)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), true);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformCaseStatementExpressionForSingleMatchingCase1() {
+        try {
+            expressionQueryParser.parseQuery("identifier=case(1<2,10,default,100)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), 10.0);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformCaseStatementExpressionForSingleMatchingCase2() {
+        try {
+            expressionQueryParser.parseQuery("identifier=case(1>2,10,2<3,20,3>4,30,default,100)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), 20.0);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformCaseStatementExpressionForMultipleMatchingCase() {
+        try {
+            expressionQueryParser.parseQuery("identifier=case(1>2,10,2<3,20,3<4,30,default,100)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), 20.0);
+    }
+
+    @Test
+    public void ExpressionQueryParser_ShouldPerformCaseStatementExpressionForNoneMatchingCase() {
+        try {
+            expressionQueryParser.parseQuery("identifier=case(1>2,10,2>3,20,3>4,30,default,100)", row);
+        } catch (ParseException | RecognitionException | InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals(row.get("identifier"), 100.0);
+    }
 }
